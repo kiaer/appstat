@@ -69,6 +69,7 @@ Kristian \textsc{Maar}: s172956
 \end{titlepage}
 \newpage
 \section*{Summary}
+
 \newpage
 \tableofcontents
 \newpage
@@ -81,6 +82,16 @@ Kristian \textsc{Maar}: s172956
 
 \section{Analysis}
 asd
+<<echo=FALSE>>=
+det <- read.table("~/appstat/Case1/SPR.txt",header=TRUE, colClasses = c("factor", "numeric", "numeric", "factor", "numeric", "factor", "factor"))
+det$RunDate <- factor(det$RunDate,
+                      labels = c("25/11/2008","27/11/2008", "3/12/2008", "5/12/2008", "8/12/2008"))
+det$logR <- log(det$Response)
+lm3<- step(lm(logR ~ RunDate+Cycle+Enzyme*EnzymeConc*DetStock*CaStock, det, subset = -14))
+par(mfrow=c(2,2))
+plot(lm3)
+@
+
 \section{Results}
 
 \section{Discussion}
