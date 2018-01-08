@@ -5,3 +5,5 @@ Sample_solutions_week_1/
 *.pdf
 *.toc
 *.synctex.gz
+*.sty
+*.DS_Store
