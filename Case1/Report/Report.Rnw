@@ -54,7 +54,7 @@
 \end{center}
 \begin{flushleft} \large
 \emph{Author:}\\
-Christian Mathias Rohde \textsc{Kiær}: s123812\\
+Christian Mathias Rohde \textsc{Ki??r}: s123812\\
 Per Anton \textsc{Almgren}: s170464\\
 Kristian \textsc{Maar}: s172956
 \end{flushleft}
