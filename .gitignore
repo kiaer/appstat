@@ -1,2 +1,7 @@
 Week1/
 Sample_solutions_week_1/
+*.tex
+*.log
+*.pdf
+*.toc
+*.synctex.gz
