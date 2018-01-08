@@ -1,1 +1,1 @@
-che<-read.table("SRP.txt",header=TRUE,row.names=1)
+che<-read.table("SPR.txt",header=TRUE)
