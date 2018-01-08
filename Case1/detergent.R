@@ -29,5 +29,7 @@ AIC(lm3)
 drop1(lm3, test="F")
 coef(lm3)
 
+anova(lm3)
+
 plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
 interaction.plot(det$EnzymeConc, det$Enzyme, exp(det$logR), ylim = c(0,1500))
