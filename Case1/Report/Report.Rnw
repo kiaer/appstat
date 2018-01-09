@@ -84,7 +84,28 @@ library(MASS)
 
 \section{Introduction}
 
+An effective washing method is not only a matter of competitive edge and potential revenue for the companies producing detergent and laundry products, it also provides benefits for the end consumer by offering possible reductions in both household economic and environmental impact while performing a crucial and daily task. The performance of different detergents is believed to be correlated to a range of variables such as enzymatic activity which is a catalytic process that involves the enzymatic breakdown of various staining compounds. There are many different enzymes with different properties and potential with regards to usefulness in removing stains from textiles and the presence or absence of other compounds may influence the cleaning performance both positively or negatively. 
+The aim of this report is to analyze the data obtained from an experiment conducted in November and December 2008. The dataset contains results from the testing of 5 different enzymes at different concentrations. The effects of the presence or absence of a detergent and Calcium ions are also investigated with all 5 enzymes. This analysis will attempt to reject or confirm all possible correlations between the variable combinations of enzymes, detergent and Calcium-ions. The preliminary assumption is that the cleaning solutions applied in the experiment have no significant effect on the response of an experimental proteinfilm that substitutes for a theoretical stain on a textile. If the data provided are in contradiction with this assumption we will use statistical modelleing to further reveal the possible correlations and make inference about the results.
+
+
+\underline{The process will involve specifically:}
+
+
+- A general interpretation of the data. 
+
+- Determining if Calcium-ions and detergent affect the catalytic activity.
+
+- Determining to what extend the catalytc activity is dependant upon enzyme concentration.
+
+- Comparing the performance of the individual enzymes and showing what enzyme performed best and which performed poorest in the experiment.
+
+- Scrutenizing the dataset and methodology for indications of systematic error a discussion of the possible effects on the statistical analysis and an evaluation of the overall validity of the results.
+
+
 \section{Case Description}
+
+The dataset contains 160 individual measurements performed during 5 days from November 25th to December 8th 2008. On each individual day only one of the total 5 enzymes was tested. The performance of each enzyme was tested in the presence and absence of detergent and Calcium ions as well as the presence or absence of the combination of both detergent and Calcium-ions.
+
 
 Description of data (Table)
 
