@@ -94,18 +94,16 @@ Residuals
 Outliers
 <<>>=
 control <- subset(SPR$Response, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
-par(mfrow=c(1,1))
+par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
 plot(control)
 summary(control)
 control2 <- subset(SPR$Enzyme, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
-plot(control2, control)
+plot(control2, control,ylab="Response", xlab="Enzyme")
 
 fit <- aov(control ~ control2, data = SPR)
 summary(fit)
 
 plot(control)
-
-plot(SPR)
 
 @
 
