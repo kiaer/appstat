@@ -10,7 +10,7 @@ boxplot(Response ~ EnzymeConc,det)
 boxplot(Response ~ Enzyme, det)
 
 par(mfrow=c(2,2))
-lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc*DetStock*CaStock, det)
+lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
 summary(lm1)
 plot(lm1)
 anova(lm1)
@@ -38,9 +38,6 @@ AIC(lm3)
 drop1(lm3, test="F")
 coef(lm3)
 
-<<<<<<< HEAD
-anova(lm3)
-=======
 det$Rpower <- det$Response^0.4
 lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 par(mfrow=c(2,2))
@@ -59,24 +56,23 @@ anova(lm6)
 anova(lm3, lm5)
 AIC(lm3)
 AIC(lm5)
->>>>>>> Detergent new 0.4 transform
 
 plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
 interaction.plot(det$EnzymeConc, det$Enzyme, exp(det$logR), ylim = c(0,1500))
 
 # One style
 # Calculating 95% confidence intervals:
-pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=(0:15), DetStock="Det0", CaStock="Ca0")
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=seq(0,3, 0.2), DetStock="Det0", CaStock="Ca0")
 pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
 # Plotting
 par(mfrow=c(1,2))
-matplot(c(0,3),range(pred),type="n",ylim=range(0,700), ylab="Response", xlab="Concentration", main="Det0")
+matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), ylab="Response", xlab="Concentration", main="Det0")
 matlines((0:15), cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
 legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 
-pred.d<-expand.grid(Enzyme=levels(det$Enzyme),EnzymeConc=0:15,DetStock="Det+", CaStock="Ca0", concpow=(0:15)^0.4)
-pred<-exp(predict(lm4,pred.d,int="c")) # Predictions on original scale
-matplot(c(0,15),range(pred),type="n",ylim=range(pred), ylab="Response", xlab="Concentration", main="Det+")
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme),concpow=seq(0,3,0.2),DetStock="Det+", CaStock="Ca0")
+pred<- predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
+matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), ylab="Response", xlab="Concentration", main="Det+")
 matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
 legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 
