@@ -88,7 +88,12 @@ library(MASS)
 
 \section{Introduction}
 
+An effective washing method is not only a matter of competitive edge and potential revenue for the companies producing detergent and laundry products, it also provides benefits for the end consumer by offering possible reductions in both household economic and environmental impacts during the performance of a crucial and daily task. The performance of different detergents is believed to be correlated to a range of variables such as enzymatic activity which is a catalytic process that involves the enzymatic breakdown of various staining compounds. There are many different enzymes with different properties and potential with regards to usefulness in removing stains from textiles and the presence or absence of other compounds may influence the cleaning performance both positively or negatively. 
+The aim of this report is to analyze the data obtained from an experiment conducted in November and December 2008. The dataset contains results from the testing of 5 different enzymes at different concentrations. The effects of the presence or absence of a detergent and Calcium ions are also investigated with all 5 enzymes. This analysis will attempt to reject or confirm all possible correlations between the variable combinations of enzymes, detergent and Calcium-ions. The preliminary assumption is that the cleaning solutions applied in the experiment have no significant effect on the response of an experimental proteinfilm. If the data provided are in contradiction with this assumption we will use statistical modelleing to further reveal the possible correlations and make inference about the results.
+
 \section{Case Description}
+
+
 
 Description of data (Table)
 
