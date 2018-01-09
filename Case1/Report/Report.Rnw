@@ -157,7 +157,7 @@ Now there is a maximal linear model, and following the principle of parsimony th
 4) Choice of model and reasoning/arguments behind our choice
 
 \section{Results}
-<<diagnostics>>=
+<<diagnostics, echo=FALSE>>=
 plot(lm4)
 @
 
@@ -212,6 +212,7 @@ plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 <<aov, results="asis", echo=FALSE>>=
 xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
 @
+
 
 \section{Conclusion}
 
