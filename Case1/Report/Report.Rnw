@@ -152,7 +152,7 @@ det$concpow <- det$EnzymeConc^0.4
 lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 @
 
-<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H">>=
+<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H" , fig.cap="Plots showing the mean value and residuals for all enzymes when in concentration of 2.5 nM and detergent present. Enzyme E is also presented without the suspected outlier.">>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
 par(mfrow=c(2,3))
 plot(1:4,testA<-subset(test$Response,test$Enzyme=="A"),ylab="Response"
@@ -190,6 +190,8 @@ plot(1:3, e2<-testE[c(1,2,4)],ylab="Response"
 title('Enzyme E- measurement 147')
 abline(mean(e2),0)
 for(i in 1:3) lines(c(i,i),c(mean(e2),e2[i]))
+
+
 @
 
 <<Normality, echo=FALSE,fig.cap="figurtekst", fig.height=4>>=
@@ -200,9 +202,18 @@ qqPlot(det$Response)
 <<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1", fig.pos="H">>=
 boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
 @
-When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. This model is a maximal model using all explanatory variables to model the response in the experiments. However, when investigating the adequacy of this approach, it is found that the data does not seem to be normally distributed which is a demand for a linear model. The variance of the response parameter is largest in the medium values, and the Q-Q plot also shows non-linear behaviour(inkluder model plot med qq og residuals). This means that there is need for some kind of transformation of the data. To investigate this further a boxcox plot (figure \ref{boxcox}) is made in order to find the appropriate transformation. 
+When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate this a linear model is set up:
+<<lm1, echo=TRUE>>=
+lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
+@
 
-However, when examining this new model, one particular observation stands out. This is observation number 14, which in all plots(figure from lm including 14) stands as a clear outlier with a Cook's distance near 0.5. This observation is therefore regarded as unreliable and is therefore excluded from the model. 
+This model is a maximal model using all explanatory variables to model the response in the experiments. To find the appropriate transformation a boxcox plot is made (figure \ref{boxcox}), and based on this a transformation of the response observarions using the power of 0.4 is chosen. Now a new linear model is formed using the new transformation. Further analysis of residuals vs. leverage in the new model showed that a transformation of the enzyme concentrations would be appropriate. Now the power of 0.4 is also applied to the enzyme concentrations and another model is set up using this as well. When analyzing this model an outlier becomes apparent. This is observation 147:
+<<147, results='asis',echo=FALSE>>=
+xtable(det[147,1:7], caption = "Outlier observation 147", label = "tab:147")
+@
+
+To look further into this observation, and decide whether it is to be excluded from the data set or not, it is compared to the other measurements made under the same conditions. This is an enzyme concentration of 2.5 nM with detergent present as seen in table \ref{tab:147}. The hardness of the water is not taken into account, as an anova analysis has proven this to be of no statistical significance with a p-value of 0.4257. In figure \ref{test147} mean values of the response for all enzymes are plotted together with the residuals to investigate the variance of the measurements. Enzyme E is also plotted without observation 147. When comparing the different variances the variance of enzyme E stands out a lot, and after removing observation 147 the variance is in the same order of magnitude as the other measurements. This leads to the desition to exclude this outlier.
+
 Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model.
 
 2)Transformation - Description
