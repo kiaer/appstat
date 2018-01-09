@@ -58,7 +58,7 @@ AIC(lm3)
 AIC(lm5)
 
 plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
-interaction.plot(det$EnzymeConc, det$Enzyme, exp(det$logR), ylim = c(0,1500))
+interaction.plot(det$EnzymeConc, det$Enzyme, det$, ylim = c(0,1500))
 
 # One style
 # Calculating 95% confidence intervals:

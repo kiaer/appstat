@@ -95,7 +95,25 @@ Description of data (Table)
 
 Missing data
 
+Transformation of data
 
+Testing normality - QQ plot
+
+Residualss
+
+Outliers
+
+<<control, echo=FALSE>>=
+control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
+
+EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+fit <- aov(control ~ EnzymeType, data = det)
+@
+
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=TRUE>>=
+plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
+@
 
 <<plots showing outlier, echo=FALSE>>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
@@ -143,12 +161,13 @@ library(car)
 qqPlot(det$Response)
 @
 \section{Analysis}
-
+<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1">>=
+boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
+@
 When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. This model is a maximal model using all explanatory variables to model the response in the experiments. However, when investigating the adequacy of this approach, it is found that the data does not seem to be normally distributed which is a demand for a linear model. The variance of the response parameter is largest in the medium values, and the Q-Q plot also shows non-linear behaviour(inkluder model plot med qq og residuals). This means that there is need for some kind of transformation of the data. To investigate this further a boxcox plot (figure \ref{boxcox}) is made in order to find the appropriate transformation. 
 
-However, when examining this new model, one particular observation stands out. This is observation number 14, which in all plots(figure from lm including 14) stands as a clear outlier with a Cook's distance near 0.5. This observation is therefore regarded as unreliable and is therefore excluded from the model. 
+However, when examining this new model, one particular observation stands out. This is observation number 14, which in all plots(figure from lm including \14) stands as a clear outlier with a Cook's distance near 0.5. This observation is therefore regarded as unreliable and is therefore excluded from the model. 
 Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model.
-
 
 2)Transformation - Description
 
@@ -157,13 +176,12 @@ Now there is a maximal linear model, and following the principle of parsimony th
 4) Choice of model and reasoning/arguments behind our choice
 
 \section{Results}
-<<diagnostics, echo=FALSE>>=
-plot(lm4)
+<<diagnostics, echo=FALSE, fig.cap="Diagnostics plot of LM4">>=
+par(mfrow=c(2,2))
+plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 @
 
-<<boxcox, echo=FALSE>>=
-boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
-@
+\section{Results}
 
 <<summary, results='asis'>>=
 xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sum")
@@ -176,8 +194,8 @@ xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova")
 <<drop1, results='asis'>>=
 xtable(drop1(lm4, test="F"), caption = "Drop 1 tabel with F-test", label = "tab:drop1")
 @
-
-<<enzymede, echo=FALSE>>=
+\newpage
+<<enzymede, echo=FALSE, fig.height=6, out.width='.9\\linewidth'>>=
 pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=seq(0,3, 0.2), DetStock="Det0", CaStock="Ca0")
 pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
 # Plotting
