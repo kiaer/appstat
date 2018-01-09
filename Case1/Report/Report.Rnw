@@ -133,13 +133,13 @@ The sum of replications yields a total of 160 observations divided evenly among 
 xtable(summary(det), caption = "Summary of the data showing an even distribution of replications among the variables with 32 replications pr. day and 32 replications pr. enzyme. Though the table only shows that calcium ions and detergent was present in half the replications further scrutiny of the data reveals that all the possible presence/absence combinations are evenly distributed. While the range of response is from 0.1 to 1588 the mean = 431.6 and median = 322.4 suggests that the dataset is skewed towards lower response values  - The Cycle and EnzymeConc values are irrelevant in the table above as the numeric values are discrete and therefors are better interpreted as factors.", label = "tab:sum")
 @
 
-<<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Initial Barplot of enzymes and concentration compared to response">>=
+<<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Barplot showing an overview of the response values of the different enzymes and different concentrations. The plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance.">>=
 par(mfrow=c(1,1))
 barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
-legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("Enzyme Concentration","0 nM", "2.5 nM", "7.5 nM", "15 nM"), lty = 1)
+legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0 nM", "2.5 nM", "7.5 nM", "15 nM"), lty = 1)
 @
 
-<<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H">>=
+<<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H", fig.cap= " (Top) Boxplot showing the response values at the different enzyme concentrations. There seems to be a significant increase in response mean values at higher enzyme concentrations. (Bottom) Boxplot showing the response values of the different enzymes. When comparing the mean values the plot seems to suggest that enzyme A outperforms the other 4 enzymes and enzyme E could also have significantly higher responses than enzymes B, C and D. While enzyme B and C show comparable responses, enzyme D seem to perform poorest ">>=
 par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
 boxplot(Response ~ EnzymeConc,det, xlab="Enzyme Concentration", ylab="Response")
 boxplot(Response ~ Enzyme, det, xlab="Enzymes", ylab="Response")
