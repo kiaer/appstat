@@ -92,34 +92,10 @@ library(MASS)
 
 Description of data (Table)
 
-Histogram 
-
-Boxplots
 
 Missing data
 
-Transformation of data
 
-Testing normality - QQ plot
-
-Residuals
-
-Outliers
-<<control, echo=FALSE>>=
-control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
-par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
-
-EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
-fit <- aov(control ~ EnzymeType, data = det)
-@
-
-<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=TRUE>>=
-plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
-@
-
-<<aov, results="asis", echo=FALSE>>=
-xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
-@
 
 <<plots showing outlier, echo=FALSE>>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
@@ -164,8 +140,13 @@ for(i in 1:3) lines(c(i,i),c(mean(e2),e2[i]))
 
 \section{Analysis}
 
+1)QQ - Plots - Investigating normal distribution.
 
+2)Transformation - Description
 
+3)Investigation and explanation concerning outliers in the data, what we do and why.
+
+4) Choice of model and reasoning/arguments behind our choice
 
 \section{Results}
 <<diagnostics>>=
@@ -206,7 +187,23 @@ legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 
 \section{Discussion}
 
+Systematic errors - Discussion of 0 Enzyme, 0 Detergent variable data, and analysis of variance of the results. 
 
+<<control, echo=FALSE>>=
+control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
+
+EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+fit <- aov(control ~ EnzymeType, data = det)
+@
+
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=FALSE>>=
+plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
+@
+
+<<aov, results="asis", echo=FALSE>>=
+xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
+@
 
 \section{Conclusion}
 
