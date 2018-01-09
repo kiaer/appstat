@@ -149,7 +149,7 @@ for(i in 1:3) lines(c(i,i),c(mean(e2),e2[i]))
 4) Choice of model and reasoning/arguments behind our choice
 
 \section{Results}
-<<diagnostics>>=
+<<diagnostics, echo=FALSE>>=
 plot(lm4)
 @
 
@@ -204,6 +204,7 @@ plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 <<aov, results="asis", echo=FALSE>>=
 xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
 @
+
 
 \section{Conclusion}
 
