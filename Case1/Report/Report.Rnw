@@ -84,7 +84,7 @@ library(MASS)
 
 \section{Introduction}
 
-An effective washing method is not only a matter of competitive edge and potential revenue for the companies producing detergent and laundry products, it also provides benefits for the end consumer by offering possible reductions in both household economic and environmental impact while performing a crucial and daily task. The performance of different detergents is believed to be correlated to a range of variables such as enzymatic activity which is a catalytic process that involves the enzymatic breakdown of various staining compounds. There are many different enzymes with different properties and potential with regards to usefulness in removing stains from textiles and the presence or absence of other compounds may influence the cleaning performance both positively or negatively. 
+An effective washing method is not only a matter of competitive edge and potential revenue for companies producing detergent and laundry products, it also provides benefits for the end consumer by offering possible reductions in both household economic and environmental impact while performing a crucial and daily task. The performance of different detergents is believed to be correlated to a range of variables such as enzymatic activity which is a catalytic process that involves the enzymatic breakdown of various staining compounds. There are many different enzymes with different properties and potential with regards to usefulness in removing stains from textiles and the presence or absence of other compounds may influence the cleaning performance both positively or negatively. 
 The aim of this report is to analyze the data obtained from an experiment conducted in November and December 2008. The dataset contains results from the testing of 5 different enzymes at different concentrations. The effects of the presence or absence of a detergent and Calcium ions are also investigated with all 5 enzymes. This analysis will attempt to reject or confirm all possible correlations between the variable combinations of enzymes, detergent and Calcium-ions. The preliminary assumption is that the cleaning solutions applied in the experiment have no significant effect on the response of an experimental proteinfilm that substitutes for a theoretical stain on a textile. If the data provided are in contradiction with this assumption we will use statistical modelleing to further reveal the possible correlations and make inference about the results.
 
 
@@ -102,32 +102,41 @@ The aim of this report is to analyze the data obtained from an experiment conduc
 - Scrutenizing the dataset and methodology for indications of systematic error a discussion of the possible effects on the statistical analysis and an evaluation of the overall validity of the results.
 
 
+?????? Description of the analysis that will be applied????
+
 \section{Case Description}
 
-The dataset contains 160 individual measurements performed during 5 days from November 25th to December 8th 2008. On each individual day only one of the total 5 enzymes was tested. The performance of each enzyme was tested in the presence and absence of detergent and Calcium ions as well as the presence or absence of the combination of both detergent and Calcium-ions.
+The dataset contains 160 individual measurements performed during 5 days from November 25th to December 8th 2008. On each individual day only one of the total 5 enzymes was tested. The performance of each enzyme was tested in the presence and absence of detergent and Calcium ions as well as the presence or absence of the combination of both detergent and Calcium-ions. The replications of the experiment for the various combinations of variable was conducted in random order within the cycle. The data for each replication of the experiment yields the following variables:
+
+RunDate:      Date of the experiment. (YMMDD)
+
+Cycle:        Cycle number of the particular replicant within the cycle.
+
+Response:     Amount of Protein removed in RU. (10^-^6  g/m^2)
+
+Enzyme:       Identifying the particular enzyme. (A,B,C,D or E)
+
+EnzymeConc:   Enzyme concentration in nM.  (0, 2.5, 7.5 15)
+
+DetStock:     With or without detergent. (+ or 0)
+
+CaStock:      With or without Calcium ions. (+ or 0)
 
 
-Description of data (Table)
+
+The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. 
 
 
-Missing data
 
-Transformation of data
-
-Testing normality - QQ plot
-
-Residualss
-
-Outliers
 
 <<initSum, results='asis', echo=FALSE>>=
-xtable(summary(det))
+xtable(summary(det), caption = "Summary of the data showing an even distribution of replications among the variables with 32 replications pr. day and 32 replications pr. enzyme. Though the table only shows that calcium ions and detergent was present in half the replications further scrutiny of the data reveals that all the possible presence/absence combinations are evenly distributed. While the range of response is from 0.1 to 1588 the mean = 431.6 and median = 322.4 suggests that the dataset is skewed towards lower response values  - The Cycle and EnzymeConc values are irrelevant in the table above as the numeric values are discrete and therefors are better interpreted as factors.", label = "tab:sum")
 @
 
 <<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Initial Barplot of enzymes and concentration compared to response">>=
 par(mfrow=c(1,1))
 barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
-legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0", "2.5", "7.5", "15"), lty = 1)
+legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("Enzyme Concentration","0 nM", "2.5 nM", "7.5 nM", "15 nM"), lty = 1)
 @
 
 <<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H">>=
@@ -242,6 +251,8 @@ legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 \section{Discussion}
 
 Systematic errors - Discussion of 0 Enzyme, 0 Detergent variable data, and analysis of variance of the results. 
+
+Systematic errors - can we compare the 2 sets of 0 value replications??? E.g. by splitting the data?
 
 <<control, echo=FALSE>>=
 control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
