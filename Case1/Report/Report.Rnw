@@ -77,10 +77,6 @@ Kristian \textsc{Maar}: s172956
 det <- read.table("SPR.txt",header=TRUE, colClasses = c("factor", "numeric", "numeric", "factor", "numeric", "factor", "factor"))
 det$RunDate <- factor(det$RunDate,
                       labels = c("25/11/2008","27/11/2008", "3/12/2008", "5/12/2008", "8/12/2008"))
-
-det$Rpower <- det$Response^0.4
-det$concpow <- det$EnzymeConc^0.4
-lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
 library(xtable)
 library(MASS)
@@ -100,9 +96,38 @@ Description of data (Table)
 
 Missing data
 
+Transformation of data
+
+Testing normality - QQ plot
+
+Residualss
+
+Outliers
+
+<<initSum, results='asis', echo=FALSE>>=
+xtable(summary(det))
+@
+
+<<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Initial Barplot of enzymes and concentration compared to response">>=
+par(mfrow=c(1,1))
+barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
+legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0", "2.5", "7.5", "15"), lty = 1)
+@
+
+<<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H">>=
+par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
+boxplot(Response ~ EnzymeConc,det, xlab="Enzyme Concentration", ylab="Response")
+boxplot(Response ~ Enzyme, det, xlab="Enzymes", ylab="Response")
+@
 
 
-<<plots showing outlier, echo=FALSE>>=
+<<echo=FALSE, results='hide'>>=
+det$Rpower <- det$Response^0.4
+det$concpow <- det$EnzymeConc^0.4
+lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
+@
+
+<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H">>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
 par(mfrow=c(2,3))
 plot(1:4,testA<-subset(test$Response,test$Enzyme=="A"),ylab="Response"
@@ -140,20 +165,20 @@ plot(1:3, e2<-testE[c(1,2,4)],ylab="Response"
 title('Enzyme E- measurement 147')
 abline(mean(e2),0)
 for(i in 1:3) lines(c(i,i),c(mean(e2),e2[i]))
-
 @
 
-<<Normality, echo=FALSE,fig.cap="figurtekst">>=
+<<Normality, echo=FALSE,fig.cap="figurtekst", fig.height=4>>=
 library(car)
 qqPlot(det$Response)
 @
 \section{Analysis}
-
+<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1", fig.pos="H">>=
+boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
+@
 When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. This model is a maximal model using all explanatory variables to model the response in the experiments. However, when investigating the adequacy of this approach, it is found that the data does not seem to be normally distributed which is a demand for a linear model. The variance of the response parameter is largest in the medium values, and the Q-Q plot also shows non-linear behaviour(inkluder model plot med qq og residuals). This means that there is need for some kind of transformation of the data. To investigate this further a boxcox plot (figure \ref{boxcox}) is made in order to find the appropriate transformation. 
 
 However, when examining this new model, one particular observation stands out. This is observation number 14, which in all plots(figure from lm including 14) stands as a clear outlier with a Cook's distance near 0.5. This observation is therefore regarded as unreliable and is therefore excluded from the model. 
 Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model.
-
 
 2)Transformation - Description
 
@@ -161,14 +186,14 @@ Now there is a maximal linear model, and following the principle of parsimony th
 
 4) Choice of model and reasoning/arguments behind our choice
 
-\section{Results}
-<<diagnostics, echo=FALSE>>=
-plot(lm4)
+<<diagnostics, echo=FALSE, fig.cap="Diagnostics plot of LM4", fig.pos="H">>=
+par(mfrow=c(2,2))
+plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 @
 
-<<boxcox, echo=FALSE>>=
-boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
-@
+\section{Results}
+
+As a result of the analysis, the linear mode
 
 <<summary, results='asis'>>=
 xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sum")
@@ -179,10 +204,10 @@ xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova")
 @
 
 <<drop1, results='asis'>>=
-xtable(drop1(lm4, test="F"), caption = "Drop 1 tabel with F-test", label = "tab:drop1")
+xtable(drop1(lm4, test="F"), caption = "Drop 1 tabel with F-test", label = "tab:drop1", table.placement="H")
 @
-
-<<enzymede, echo=FALSE>>=
+\newpage
+<<enzymede, echo=FALSE, fig.height=6, out.width='.9\\linewidth', fig.pos="H">>=
 pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=seq(0,3, 0.2), DetStock="Det0", CaStock="Ca0")
 pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
 # Plotting
@@ -210,7 +235,7 @@ EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
 fit <- aov(control ~ EnzymeType, data = det)
 @
 
-<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=FALSE>>=
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=FALSE, fig.pos="h!", fig.height=4>>=
 plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 @
 
