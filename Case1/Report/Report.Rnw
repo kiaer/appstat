@@ -77,17 +77,18 @@ Kristian \textsc{Maar}: s172956
 
 \section{Case Description}
 
-
-
 Description of data (Table)
 
 Histogram 
 
 Boxplots
 
+Missing data
+
 Transformation of data
 
 Testing normality - QQ plot
+
 Residuals
 
 Outliers
