@@ -77,6 +77,8 @@ Kristian \textsc{Maar}: s172956
 
 \section{Case Description}
 
+
+
 Description of data (Table)
 
 Histogram 
@@ -102,10 +104,12 @@ summary(fit)
 
 plot(control)
 
+plot(SPR)
+
 @
 
 \section{Analysis}
-asd
+asd2
 <<echo=FALSE>>=
 det <- read.table("SPR.txt",header=TRUE, colClasses = c("factor", "numeric", "numeric", "factor", "numeric", "factor", "factor"))
 det$RunDate <- factor(det$RunDate,
