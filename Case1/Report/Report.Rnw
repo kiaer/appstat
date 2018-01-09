@@ -105,19 +105,21 @@ Testing normality - QQ plot
 Residuals
 
 Outliers
-<<>>=
-control <- subset(SPR$Response, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
+<<control, echo=FALSE>>=
+control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
 par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
-plot(control)
 summary(control)
-control2 <- subset(SPR$Enzyme, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
-plot(control2, control,ylab="Response", xlab="Enzyme")
-
-fit <- aov(control ~ control2, data = SPR)
+EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+fit <- aov(control ~ EnzymeType, data = det)
 summary(fit)
+@
 
-plot(control)
+<<Controlsampples, echo=FALSE>>=
+plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
+@
 
+<<aov, results="asis", echo=FALSE>>=
+xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
 @
 
 \section{Analysis}
