@@ -108,13 +108,12 @@ Outliers
 <<control, echo=FALSE>>=
 control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
 par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
-summary(control)
+
 EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
 fit <- aov(control ~ EnzymeType, data = det)
-summary(fit)
 @
 
-<<Controlsampples, echo=FALSE>>=
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=TRUE>>=
 plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 @
 
