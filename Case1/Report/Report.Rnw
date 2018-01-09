@@ -11,7 +11,7 @@
 \usepackage{parskip}
 \usepackage{url}
 \usepackage{float}
-\usepackage{enumitem}
+\usepackage{enumitem} 
 \usepackage{amstext}
 \usepackage{fancybox}
 \usepackage{amsmath}
@@ -76,14 +76,38 @@ Kristian \textsc{Maar}: s172956
 \section{Introduction}
 
 \section{Case Description}
+
+Description of data (Table)
+
+Histogram 
+
+Boxplots
+
+Transformation of data
+
+Testing normality - QQ plot
+Residuals
+
+Outliers
 <<>>=
-1+1
+control <- subset(SPR$Response, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
+par(mfrow=c(1,1))
+plot(control)
+summary(control)
+control2 <- subset(SPR$Enzyme, SPR$EnzymeConc == 0.0 & SPR$DetStock == "Det0")
+plot(control2, control)
+
+fit <- aov(control ~ control2, data = SPR)
+summary(fit)
+
+plot(control)
+
 @
 
 \section{Analysis}
 asd
 <<echo=FALSE>>=
-det <- read.table("~/appstat/Case1/SPR.txt",header=TRUE, colClasses = c("factor", "numeric", "numeric", "factor", "numeric", "factor", "factor"))
+det <- read.table("SPR.txt",header=TRUE, colClasses = c("factor", "numeric", "numeric", "factor", "numeric", "factor", "factor"))
 det$RunDate <- factor(det$RunDate,
                       labels = c("25/11/2008","27/11/2008", "3/12/2008", "5/12/2008", "8/12/2008"))
 det$logR <- log(det$Response)
