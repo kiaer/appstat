@@ -92,34 +92,10 @@ library(MASS)
 
 Description of data (Table)
 
-Histogram 
-
-Boxplots
 
 Missing data
 
-Transformation of data
 
-Testing normality - QQ plot
-
-Residuals
-
-Outliers
-<<control, echo=FALSE>>=
-control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
-par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
-
-EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
-fit <- aov(control ~ EnzymeType, data = det)
-@
-
-<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=TRUE>>=
-plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
-@
-
-<<aov, results="asis", echo=FALSE>>=
-xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
-@
 
 <<plots showing outlier, echo=FALSE>>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
@@ -168,11 +144,20 @@ qqPlot(det$Response)
 @
 \section{Analysis}
 
+<<<<<<< HEAD
 When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. This model is a maximal model using all explanatory variables to model the response in the experiments. However, when investigating the adequacy of this approach, it is found that the data does not seem to be normally distributed which is a demand for a linear model. The variance of the response parameter is largest in the medium values, and the Q-Q plot also shows non-linear behaviour(inkluder model plot med qq og residuals). This means that there is need for some kind of transformation of the data. To investigate this further a boxcox plot (figure \ref{boxcox}) is made in order to find the appropriate transformation. 
 
 However, when examining this new model, one particular observation stands out. This is observation number 14, which in all plots(figure from lm including 14) stands as a clear outlier with a Cook's distance near 0.5. This observation is therefore regarded as unreliable and is therefore excluded from the model. 
 Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model.
+=======
+1)QQ - Plots - Investigating normal distribution.
 
+2)Transformation - Description
+
+3)Investigation and explanation concerning outliers in the data, what we do and why.
+>>>>>>> cf03d78e6a98628b673beb71e4ade27a27ee232f
+
+4) Choice of model and reasoning/arguments behind our choice
 
 \section{Results}
 <<diagnostics>>=
@@ -213,7 +198,23 @@ legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 
 \section{Discussion}
 
+Systematic errors - Discussion of 0 Enzyme, 0 Detergent variable data, and analysis of variance of the results. 
 
+<<control, echo=FALSE>>=
+control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
+
+EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+fit <- aov(control ~ EnzymeType, data = det)
+@
+
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=FALSE>>=
+plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
+@
+
+<<aov, results="asis", echo=FALSE>>=
+xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
+@
 
 \section{Conclusion}
 
