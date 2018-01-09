@@ -19,17 +19,64 @@ summary(lm2)
 anova(lm2)
 drop1(lm2, test="F")
 
+lmt <- lm(Response ~ Enzyme * EnzymeConc, det)
+library(MASS)
+par(mfrow=c(1,1))
+boxcox(lm1, data=det)
+boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
+det$concpow <- det$EnzymeConc^0.4
+
+plot(det$concpow, det$Rpower)
+
 det$logR <- log(det$Response)
 lm3<- step(lm(logR ~ RunDate+Cycle+Enzyme*EnzymeConc*DetStock*CaStock, det, subset = -14))
 par(mfrow=c(2,2))
-plot(lm3)
+plot(lm3, col=as.numeric(as.factor(det$EnzymeConc[-14])))
 summary(lm3)
 anova(lm3)
 AIC(lm3)
 drop1(lm3, test="F")
 coef(lm3)
 
+<<<<<<< HEAD
 anova(lm3)
+=======
+det$Rpower <- det$Response^0.4
+lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
+par(mfrow=c(2,2))
+plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
+summary(lm4)
+anova(lm4)
+AIC(lm4)
+AIC(lm3)
+drop1(lm4, test="F")
+summary(lm5<-update(lm4,.~.-CaStock))
+drop1(lm5, test="F")
+summary(lm6<-update(lm5,.~.-DetStock:CaStock))
+anova(lm6)
+
+
+anova(lm3, lm5)
+AIC(lm3)
+AIC(lm5)
+>>>>>>> Detergent new 0.4 transform
 
 plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
 interaction.plot(det$EnzymeConc, det$Enzyme, exp(det$logR), ylim = c(0,1500))
+
+# One style
+# Calculating 95% confidence intervals:
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=(0:15), DetStock="Det0", CaStock="Ca0")
+pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
+# Plotting
+par(mfrow=c(1,2))
+matplot(c(0,3),range(pred),type="n",ylim=range(0,700), ylab="Response", xlab="Concentration", main="Det0")
+matlines((0:15), cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
+legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
+
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme),EnzymeConc=0:15,DetStock="Det+", CaStock="Ca0", concpow=(0:15)^0.4)
+pred<-exp(predict(lm4,pred.d,int="c")) # Predictions on original scale
+matplot(c(0,15),range(pred),type="n",ylim=range(pred), ylab="Response", xlab="Concentration", main="Det+")
+matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
+legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
+
