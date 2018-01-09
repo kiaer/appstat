@@ -4,10 +4,18 @@ det$RunDate <- factor(det$RunDate,
 
 plot(det, panel=panel.smooth)
 summary(det)
-barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE)
-par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
+barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, 
+        legend = c("0", "2.5", "7.5", "15"))
+
+barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
+legend(18, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0", "2.5", "7.5", "15"), lty = 1)
+
+
+
+lwd = par(mfrow=c(1,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
 boxplot(Response ~ EnzymeConc,det)
 boxplot(Response ~ Enzyme, det)
+
 
 par(mfrow=c(2,2))
 lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
@@ -18,7 +26,7 @@ lm2 <- step(lm1)
 summary(lm2)
 anova(lm2)
 drop1(lm2, test="F")
-
+qqPlot(lm4)
 lmt <- lm(Response ~ Enzyme * EnzymeConc, det)
 library(MASS)
 par(mfrow=c(1,1))
@@ -58,7 +66,7 @@ AIC(lm3)
 AIC(lm5)
 
 plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
-interaction.plot(det$EnzymeConc, det$Enzyme, det$, ylim = c(0,1500))
+interaction.plot(det$EnzymeConc, det$Enzyme, det$Rpow, ylim = c(0,1500))
 
 # One style
 # Calculating 95% confidence intervals:
