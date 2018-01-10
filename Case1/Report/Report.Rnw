@@ -150,7 +150,31 @@ det$concpow <- det$EnzymeConc^0.4
 lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 @
 
-<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H" , fig.cap="Plots showing the mean value and residuals for all enzymes when in concentration of 2.5 nM and detergent present. Enzyme E is also presented without the suspected outlier. These plots show that enzyme E originally has a much larger variance, but after removing the suspected outlier the variance is in the same order of magnitude as the rest.">>=
+
+
+
+\section{Analysis}
+
+When analyzing the data the principle of parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed. Making a Normal Q-Q plot of the \code{Response} data (figure \ref{fig:Normality}) makes it apparent that the data is in fact not normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate which kind of transformation a linear model is set up:
+<<lm1, echo=TRUE>>=
+lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
+@
+
+<<Normality, echo=FALSE,fig.cap="Normality Q-Q plot of the response parameter of the data. This data is not normally distributed, which indicates that a transformation of the data is needed in order to make a linear model.", fig.height=4>>=
+library(car)
+qqPlot(det$Response,ylab = "Response")
+@
+This model is a maximal model using all explanatory variables to model the response in the experiments. To find the appropriate transformation a boxcox plot is made (figure \ref{fig:boxcox}), and based on this a transformation of the \code{Response} observarions using the power of $0.4$ is chosen. Now a new linear model is formed using the new transformation. Further analysis of residuals vs. leverage in the new model showed that a transformation of the enzyme concentrations would be appropriate. Now the power of 0.4 is also applied to the enzyme concentrations and another model is set up using this as well. When analyzing this model an outlier becomes apparent. This is observation 147:
+<<observation 147, results='asis',echo=FALSE>>=
+xtable(det[147,1:7], caption = "Outlier observation 147", label = "tab:147")
+@
+
+<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
+boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
+@
+To look further into this observation, and decide whether it is to be excluded from the data set or not, it is compared to the other measurements made under the same conditions. This is an enzyme concentration of 2.5 nM with detergent present as seen in table \ref{tab:147}. The hardness of the water is not taken into account, as an anova analysis has proven this to be of no statistical significance with a p-value of 0.4257. (See further in Results) In figure \ref{fig:test147} mean values of the response for all enzymes are plotted together with the residuals to investigate the variance of the measurements. Enzyme E is also plotted without observation 147. When comparing the different variances the variance of enzyme E stands out a lot, and after removing observation 147 the variance is in the same order of magnitude as the other measurements. This leads to the decision to exclude this outlier.
+
+<<test147, echo=FALSE, fig.height=5, fig.pos="H" , fig.cap="Plots showing the mean value and residuals for all enzymes when in concentration of 2.5 nM and detergent present. Enzyme E is also presented without the suspected outlier. These plots show that enzyme E originally has a much larger variance, but after removing the suspected outlier the variance is in the same order of magnitude as the rest.">>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
 par(mfrow=c(2,3))
 plot(1:4,testA<-subset(test$Response,test$Enzyme=="A"),ylab="Response"
@@ -191,35 +215,9 @@ for(i in c(1,2,4)) lines(c(i,i),c(mean(e2),testE[i]))
 
 @
 
-<<Normality, echo=FALSE,fig.cap="Normality Q-Q plot of the response parameter of the data. This data is not normally distributed, which indicates that a transformation of the data is needed in order to make a linear model.", fig.height=4>>=
-library(car)
-qqPlot(det$Response,ylab = "Response")
-@
-\section{Analysis}
-<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
-boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
-@
-When analyzing the data the principle of parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate which kind of transformation a linear model is set up:
-<<lm1, echo=TRUE>>=
-lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
-@
+Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model. The final model is summarized in table \ref{tab:sum} in the Results section.
 
-This model is a maximal model using all explanatory variables to model the response in the experiments. To find the appropriate transformation a boxcox plot is made (figure \ref{boxcox}), and based on this a transformation of the response observarions using the power of 0.4 is chosen. Now a new linear model is formed using the new transformation. Further analysis of residuals vs. leverage in the new model showed that a transformation of the enzyme concentrations would be appropriate. Now the power of 0.4 is also applied to the enzyme concentrations and another model is set up using this as well. When analyzing this model an outlier becomes apparent. This is observation 147:
-<<147, results='asis',echo=FALSE>>=
-xtable(det[147,1:7], caption = "Outlier observation 147", label = "tab:147")
-@
-
-To look further into this observation, and decide whether it is to be excluded from the data set or not, it is compared to the other measurements made under the same conditions. This is an enzyme concentration of 2.5 nM with detergent present as seen in table \ref{tab:147}. The hardness of the water is not taken into account, as an anova analysis has proven this to be of no statistical significance with a p-value of 0.4257. (See further in Results) In figure \ref{test147} mean values of the response for all enzymes are plotted together with the residuals to investigate the variance of the measurements. Enzyme E is also plotted without observation 147. When comparing the different variances the variance of enzyme E stands out a lot, and after removing observation 147 the variance is in the same order of magnitude as the other measurements. This leads to the decision to exclude this outlier.
-
-Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model. The final model is summarized in table \ref{tab:sum} in the next section.
-
-The diagnostic plots of the final model shows that performance is satisfactory. Normality is fulfilled, as seen in the Normal Q-Q plot, and variance is not varying with fitted values. Looking at leverage it also looks fairly safe to say that this linear model is indeed a good fit for the data. 
-
-2)Transformation - Description
-
-3)Investigation and explanation concerning outliers in the data, what we do and why.
-
-4) Choice of model and reasoning/arguments behind our choice
+The diagnostic plots of the final model, as seen in figure \ref{fig:diagnostics} shows that performance is satisfactory. Normality is fulfilled, as seen in the Normal Q-Q plot, and variance is not varying with fitted values. Looking at leverage it also looks fairly safe to say that this linear model is indeed a good fit for the data. 
 
 <<diagnostics, echo=FALSE, fig.cap="Diagnostics plot of LM4 (final model). Colours indicate enzyme concentration as: Black: 0 nM, Red: 2.5 nM, Green: 7.5 nM, Blue: 15 nM.  Top right: The Normal Q-Q plot shows that normality is fulfilled, and therefore a linear model is appropriate. Top and bottom left: These show that variance is not affected much by the magnitude of the fitted values, which gives credability to the models description of the data. Bottom right: There are only small deviations from the center, which indicates that this linear interpretation of the data is a fairly good fit.  ", fig.pos="H">>=
 par(mfrow=c(2,2))
