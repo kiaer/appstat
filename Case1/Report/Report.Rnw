@@ -71,6 +71,8 @@ Kristian \textsc{Maar}: s172956
 \newpage
 \section*{Summary}
 
+This statistical report investigates the performance of 5 different enzymes used in an exerimental setup to test their individual effectiveness as additives for textile cleaning compounds. A review of the available data and subsequent data transformation using the power 0.4 suggests the use of a linear regression model to test significant correlations between the variables of the enzyme type and enzyme concentration, in the presence or absence of detergent and Calcium ions. We find strong evidence showing that Enzyme A outperforms the other 4, and though there is no significant performance difference between enzymes B,C and E, enzyme D perform significantly poorer than the rest. All enzymes perform better at higher concentrations. The performance of all enzymes is significantly enhanced by the presence of detergent but the presence of Calcium ions has no significant effect.  
+
 \newpage
 \tableofcontents
 \newpage
@@ -122,20 +124,29 @@ EnzymeConc:   Enzyme concentration in nM.  (0, 2.5, 7.5 15)
 DetStock:     With or without detergent. (+ or 0)
 
 CaStock:      With or without Calcium ions. (+ or 0)
+\section{Case Description}
+
+Description of data 
 
 
-The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. 
+
+
+The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. In the experiment a reference enzyme is placed in each experiment but the details for this procedure are not included in the dataset available for our analysis. As we have no further information about it we can only speculate how this might influence the validity of the analysis. It would be prefereable to include the data for the reference enzyme to allow for analysis of any possible interactions or effects. 
 
 
 <<initSum, results='asis', echo=FALSE>>=
 xtable(summary(det), caption = "Summary of the data showing an even distribution of replications among the variables with 32 replications pr. day and 32 replications pr. enzyme. Though the table only shows that calcium ions and detergent was present in half the replications further scrutiny of the data reveals that all the possible presence/absence combinations are evenly distributed. While the range of response is from 0.1 to 1588 the mean = 431.6 and median = 322.4 suggests that the dataset is skewed towards lower response values as the median is significantly lower than the mean. - The Cycle and EnzymeConc values are irrelevant in the table above as the numeric values are discrete and therefors are better interpreted as factors.", label = "tab:sum")
 @
 
+Plotting the dataset gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations. (See Figure \ref{fig:barplotinit})
+
 <<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Barplot showing an overview of the response values of the different enzymes and different concentrations. The plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance.">>=
 par(mfrow=c(1,1))
 barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
 legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0 nM", "2.5 nM", "7.5 nM", "15 nM"), lty = 1)
 @
+
+To investiagte the relative effects of the different solutions and compare the spread of response values for each enzyme we generate boxplots. (See Figure \ref{fig:boxplotInit})  The initial descriptive interpretation confirms that there appears to be a significant correlation between the concentration of enzyme and the response and that further analysis should be conducted to investigate this further. The different enzymes also seem to perform differently and there is basis for analysing the performance difference in greater detail.
 
 <<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H", fig.cap= " (Top) Boxplot showing the response values at the different enzyme concentrations. There seems to be a significant increase in response mean values at higher enzyme concentrations. (Bottom) Boxplot showing the response values of the different enzymes. When comparing the mean values the plot seems to suggest that enzyme A outperforms the other 4 enzymes and enzyme E could also have significantly higher responses than enzymes B, C and D. While enzyme B and C show comparable responses, enzyme D seem to perform poorest ">>=
 par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
