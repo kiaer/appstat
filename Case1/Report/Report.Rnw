@@ -124,46 +124,39 @@ EnzymeConc:   Enzyme concentration in nM.  (0, 2.5, 7.5 15)
 DetStock:     With or without detergent. (+ or 0)
 
 CaStock:      With or without Calcium ions. (+ or 0)
-\section{Case Description}
 
-Description of data 
-
-
-
-
-The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. In the experiment a reference enzyme is placed in each experiment but the details for this procedure are not included in the dataset available for our analysis. As we have no further information about it we can only speculate how this might influence the validity of the analysis. It would be prefereable to include the data for the reference enzyme to allow for analysis of any possible interactions or effects. 
-
+See table \ref{tab:sum} for R summary of the data set. 
 
 <<initSum, results='asis', echo=FALSE>>=
 xtable(summary(det), caption = "Summary of the data showing an even distribution of replications among the variables with 32 replications pr. day and 32 replications pr. enzyme. Though the table only shows that calcium ions and detergent was present in half the replications further scrutiny of the data reveals that all the possible presence/absence combinations are evenly distributed. While the range of response is from 0.1 to 1588 the mean = 431.6 and median = 322.4 suggests that the dataset is skewed towards lower response values as the median is significantly lower than the mean. - The Cycle and EnzymeConc values are irrelevant in the table above as the numeric values are discrete and therefors are better interpreted as factors.", label = "tab:sum")
 @
 
-Plotting the dataset gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations. (See Figure \ref{fig:barplotinit})
+The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. In the experiment a reference enzyme is placed in each experiment but the details for this procedure are not included in the dataset available for our analysis. As we have no further information about it we can only speculate how this might influence the validity of the analysis. It would be prefereable to include the data for the reference enzyme to allow for analysis of any possible interactions or effects. 
 
-<<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Barplot showing an overview of the response values of the different enzymes and different concentrations. The plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance.">>=
+
+<<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Barplot showing an overview of the response values of the different enzymes and different concentrations.">>=
 par(mfrow=c(1,1))
 barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, xlab="Enzymes", ylab="Response", col=c("snow1", "snow2", "snow3", "snow4") )
 legend(16, 1000, col=c("snow1", "snow2", "snow3", "snow4"),legend =  c("0 nM", "2.5 nM", "7.5 nM", "15 nM"), lty = 1)
 @
 
-To investiagte the relative effects of the different solutions and compare the spread of response values for each enzyme we generate boxplots. (See Figure \ref{fig:boxplotInit})  The initial descriptive interpretation confirms that there appears to be a significant correlation between the concentration of enzyme and the response and that further analysis should be conducted to investigate this further. The different enzymes also seem to perform differently and there is basis for analysing the performance difference in greater detail.
 
-<<boxplotInit, echo=FALSE, fig.height=5, fig.pos="H", fig.cap= " (Top) Boxplot showing the response values at the different enzyme concentrations. There seems to be a significant increase in response mean values at higher enzyme concentrations. (Bottom) Boxplot showing the response values of the different enzymes. When comparing the mean values the plot seems to suggest that enzyme A outperforms the other 4 enzymes and enzyme E could also have significantly higher responses than enzymes B, C and D. While enzyme B and C show comparable responses, enzyme D seem to perform poorest ">>=
-par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
+<<boxplotInit, echo=FALSE, fig.height=3, fig.pos="H", fig.cap= "(Top) Boxplot showing the response values at the different enzyme concentrations.  (Bottom) Boxplot showing the response values of the different enzymes.">>=
+par(mfrow=c(1,2),mar=c(3,3,2,1),mgp=c(2,0.7,0))
 boxplot(Response ~ EnzymeConc,det, xlab="Enzyme Concentration", ylab="Response")
 boxplot(Response ~ Enzyme, det, xlab="Enzymes", ylab="Response")
 @
+Plotting the dataset gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations.
 
+An initial description of the data is seen in Figure \ref{fig:barplotinit} and Figure \ref{fig:boxplotInit}. Looking at Figure \ref{ref:barplotinit} the plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance, while enzyme D generally seems to have the lowest response.
+
+In Figure \ref{fig:boxplotInit} again there seems to be a significant increase in response mean values at higher enzyme concentrations. When comparing the mean values the boxplot also suggest that enzyme A outperforms the other 4 enzymes while this  enzyme E, B, C and E seems to have comparable mean values. Enzyme D still has the lowest mean value of them all.
 
 <<echo=FALSE, results='hide'>>=
 det$Rpower <- det$Response^0.4
 det$concpow <- det$EnzymeConc^0.4
 lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 @
-
-
-
-
 \section{Analysis}
 
 When analyzing the data the principle of parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed. Making a Normal Q-Q plot of the \code{Response} data (figure \ref{fig:Normality}) makes it apparent that the data is in fact not normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate which kind of transformation a linear model is set up:
@@ -171,7 +164,7 @@ When analyzing the data the principle of parsimony is applied. This means that t
 lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
 @
 
-<<Normality, echo=FALSE,fig.cap="Normality Q-Q plot of the response parameter of the data. This data is not normally distributed, which indicates that a transformation of the data is needed in order to make a linear model.", fig.height=4>>=
+<<Normality, echo=FALSE,fig.cap="Normality Q-Q plot of the response parameter of the data. This data is not normally distributed, which indicates that a transformation of the data is needed in order to make a linear model.", fig.height=4, fig.pos="H">>=
 library(car)
 qqPlot(det$Response,ylab = "Response")
 @
@@ -307,7 +300,9 @@ The statistical analysis proves the different types of enzymes has a different i
 The analysis also shows how the hardness and detergent influences the activity. There is clear indications of the hardness of the water having no influence on the catalytic activity at all, while detergent has large influence on the response. This influence is also seen in the 0 enzyme concentration samples.
 \newpage
 \section{Appendix}
+\subsection*{Main script}
 <<eval=FALSE>>=
+#Main script for statistical analysis
 det <- read.table("SPR.txt",header=TRUE, 
                   colClasses = c("factor", "numeric", 
                                  "numeric", "factor", "numeric", "factor", "factor"))
@@ -410,8 +405,57 @@ matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),
                      matrix(pred[,3],nrow=16,byrow=TRUE)),
          col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
 legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
-
-
 @
+\subsection*{Variance script}
+<<eval=FALSE>>=
+#Variance lines for outlier number 147
+test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
+par(mfrow=c(2,3))
+plot(1:4,testA<-subset(test$Response,test$Enzyme=="A"),ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme A')
+abline(mean(testA),0)
+for(i in 1:4) lines(c(i,i),c(mean(testA),testA[i]))
 
+plot(1:4,testB<-subset(test$Response,test$Enzyme=="B"),ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme B')
+abline(mean(testB),0)
+for(i in 1:4) lines(c(i,i),c(mean(testB),testB[i]))
+
+plot(1:4,testC<-subset(test$Response,test$Enzyme=="C"),ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme C')
+abline(mean(testC),0)
+for(i in 1:4) lines(c(i,i),c(mean(testC),testC[i]))
+
+plot(1:4,testD<-subset(test$Response,test$Enzyme=="D"),ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme D')
+abline(mean(testD),0)
+for(i in 1:4) lines(c(i,i),c(mean(testD),testD[i]))
+
+plot(1:4,testE<-subset(test$Response,test$Enzyme=="E"),ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme E')
+abline(mean(testE),0)
+for(i in 1:4) lines(c(i,i),c(mean(testE),testE[i]))
+
+plot(c(1,2,4), e2<-testE[c(1,2,4)],ylab="Response"
+     ,xlab="Measurement No.",ylim=c(150,1000))
+title('Enzyme E- measurement 147')
+abline(mean(e2),0)
+for(i in c(1,2,4)) lines(c(i,i),c(mean(e2),testE[i]))
+@
+\subsection*{Zero concentration analysis script}
+<<eval=FALSE>>=
+control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+par(mfrow=c(1,1), mar=c(3.3,3.3,1.5,1), mgp=c(2,0.7,0))
+
+EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
+fit <- aov(control ~ EnzymeType, data = det)
+plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
+xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", 
+       label = "tab:aov")
+@
 \end{document}
