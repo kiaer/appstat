@@ -59,6 +59,7 @@ summary(lm5<-update(lm4,.~.-CaStock))
 drop1(lm5, test="F")
 summary(lm6<-update(lm5,.~.-DetStock:CaStock))
 anova(lm6)
+anova(lm1)
 
 
 anova(lm3, lm5)
