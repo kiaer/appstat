@@ -168,10 +168,10 @@ library(car)
 qqPlot(det$Response)
 @
 \section{Analysis}
-<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1", fig.pos="H">>=
+<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
 boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
 @
-When analyzing the data the Principle of Parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate this a linear model is set up:
+When analyzing the data the principle of parsimony is applied. This means that the aim is to describe the data by the simplest model possible. Therefore a linear model is set up, as this is the simplest form to model data. In order to set up a linear model, the data needs to be normally distributed, and as this is not the case a transformation of some of the data is needed. To investigate which kind of transformation a linear model is set up:
 <<lm1, echo=TRUE>>=
 lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
 @
@@ -185,13 +185,15 @@ To look further into this observation, and decide whether it is to be excluded f
 
 Now there is a maximal linear model, and following the principle of parsimony this is now to be reduced into a minimal adequate model. This is done by step wise removing insignificant explanatory variables until only statistically significant variables, and interactions between variables, are included in the model. The final model is summarized in table \ref{tab:sum} in the next section.
 
+The diagnostic plots of the final model shows that performance is satisfactory. Normality is fulfilled, as seen in the Normal Q-Q plot, and variance is not varying with fitted values. Looking at leverage it also looks fairly safe to say that this linear model is indeed a good fit for the data. 
+
 2)Transformation - Description
 
 3)Investigation and explanation concerning outliers in the data, what we do and why.
 
 4) Choice of model and reasoning/arguments behind our choice
 
-<<diagnostics, echo=FALSE, fig.cap="Diagnostics plot of LM4", fig.pos="H">>=
+<<diagnostics, echo=FALSE, fig.cap="Diagnostics plot of LM4 (final model). Colours indicate enzyme concentration as: Black: 0 nM, Red: 2.5 nM, Green: 7.5 nM, Blue: 15 nM.  Top right: The Normal Q-Q plot shows that normality is fulfilled, and therefore a linear model is appropriate. Top and bottom left: These show that variance is not affected much by the magnitude of the fitted values, which gives credability to the models description of the data. Bottom right: There are only small deviations from the center, which indicates that this linear interpretation of the data is a fairly good fit.  ", fig.pos="H">>=
 par(mfrow=c(2,2))
 plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 @
