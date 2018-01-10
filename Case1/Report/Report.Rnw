@@ -148,7 +148,7 @@ boxplot(Response ~ Enzyme, det, xlab="Enzymes", ylab="Response")
 @
 Plotting the data set gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations.
 
-An initial description of the data is seen in Figure \ref{fig:barplotinit} and Figure \ref{fig:boxplotInit}. Looking at Figure \ref{ref:barplotInit} the plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance, while enzyme D generally seems to have the lowest response.
+An initial description of the data is seen in Figure \ref{fig:barplotinit} and Figure \ref{fig:boxplotInit}. Looking at Figure \ref{fig:barplotinit} the plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance, while enzyme D generally seems to have the lowest response.
 
 In Figure \ref{fig:boxplotInit} again there seems to be a significant increase in response mean values at higher enzyme concentrations. When comparing the mean values the box plot also suggest that enzyme A outperforms the other 4 enzymes while this  enzyme E, B, C and E seems to have comparable mean values. Enzyme D still has the lowest mean value of them all.
 
