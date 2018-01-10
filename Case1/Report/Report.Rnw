@@ -71,6 +71,8 @@ Kristian \textsc{Maar}: s172956
 \newpage
 \section*{Summary}
 
+This statistical report investigates the performance of 5 different enzymes used in an exerimental setup to test their individual effectiveness as additives for textile cleaning compounds. A review of the available data and subsequent data transformation using the power 0.4 suggests the use of a linear regression model to test significant correlations between the variables of the enzyme type and enzyme concentration, in the presence or absence of detergent and Calcium ions. We find strong evidence showing that Enzyme A outperforms the other 4, and though there is no significant performance difference between enzymes B,C and E, enzyme D perform significantly poorer than the rest. All enzymes perform better at higher concentrations. The performance of all enzymes is significantly enhanced by the presence of detergent but the presence of Calcium ions has no significant effect.  
+
 \newpage
 \tableofcontents
 \newpage
