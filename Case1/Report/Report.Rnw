@@ -33,6 +33,7 @@
 \lhead{Applied Statistics and Statistical Software (02441) - Case 1}
 \rhead{\today}
 \cfoot{Page \thepage{} of \pageref{LastPage}}
+\newcommand{\code}[1]{\texttt{#1}}
 
 \title{
 \HRule \\
@@ -47,7 +48,7 @@
 \begin{titlepage}
 \begin{center}
 \textsc{\LARGE 02441 -  Applied Statistics and Statistical Software \\Winter 2018}\\[1.5cm]
-\textsc{\large Technical Univeristy of Denmark}\\[0.5cm]
+\textsc{\large Technical University of Denmark}\\[0.5cm]
 \HRule \\[0.4cm]
 { \huge \bfseries Case 1}\\[0.1cm]
 \HRule \\[1.5cm]
@@ -229,19 +230,28 @@ plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 
 As a result of the analysis, the linear mode
 
-<<summary, results='asis'>>=
+<<summary, results='asis', echo=FALSE>>=
 xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sum")
 @
-
-<<anova, results='asis'>>=
+Looking at variance analysis (Tabel \ref{tab:anova}), it is clearly seen
+<<anova, results='asis', echo=FALSE>>=
 xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova")
 @
-
-<<drop1, results='asis'>>=
+Testing the model using the \code{drop1} with the \code{test="F"} (See Table \ref{tab:drop1}) proves that no further alterations are needed, as every variable left is significant thus further dropping variables will worsen the AIC value.
+<<drop1, results='asis', echo=FALSE>>=
 xtable(drop1(lm4, test="F"), caption = "Drop 1 tabel with F-test", label = "tab:drop1", table.placement="H")
 @
-\newpage
-<<enzymede, echo=FALSE, fig.height=6, out.width='.9\\linewidth', fig.pos="H">>=
+\subsection{Influence of Calcium and Detergent}
+ Looking at the linear model, it is clearly seen that the hardness of the water has no influence on the response levels. The \code{CaStock} is removed early in the model, and even in the first analysis step it is seen to have a \code{p}-value of nearly 0.7. This is further seen in the boxplot \ref{fig:detcastock}, where we can clearly see no significant differnce in having Ca present.
+ <<detcastock, echo=FALSE, fig.height=4, fig.cap="Response as a boxplots with CaStock and DetStock", fig.pos="H">>=
+ par(mfrow=c(1,2))
+ boxplot(Response ~  CaStock, det, xlab="Calcium presence", ylab="Response")
+ boxplot(Response ~  DetStock, det,  xlab="Detergent presence", ylab="Response")
+ @
+ Looking at the detergent \ref{fig:detcastock}, it is clear that having detergent present is a big contributor to the response levels. Even at the reference levels, there is a huge increase in response when looking at \code{Det+} compared to \code{Det0}. In LM4 the \code{DetStock} is also seen as highly significant. 
+ \subsection{Difference of the Enzymes}
+ Looking at the linear model, a prediction with the confidence intervals of 95\% is done for each enzyme to determine the enzyme with the highest response. The prediction is done using the LM4 transformed to the original scales for ease of use. Predictions are done with \code{DetStock} set to both \code{Det0} and \code{Det+}. Scales are set to same response levels for easier comparison between the effect of detergent on the enzyme response.
+<<enzymede, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.pos="H", fig.cap="Prediction of the concentrations effect with 95 percent confidence intervals">>=
 pred.d<-expand.grid(Enzyme=levels(det$Enzyme), concpow=seq(0,3, 0.2), DetStock="Det0", CaStock="Ca0")
 pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
 # Plotting
@@ -256,6 +266,7 @@ matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), ylab="Response", xlab="Conc
 matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
 legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 @
+From this prediction, it is clearly seen that the Enzyme of type A provides the best response, followed by type B, type C and Type E with no significant difference between them. Lastly the Enzyme of type D has the worst response of all. Looking at using detergent or not, it is also clearly seen that adding detergent to the experiment will have a huge effect on the response. No enzyme shows individual response to detergent, as every enzyme is highly influenced by the presence of detergent. There is no change in the order of efficiency of enzymes on the response is seen with the introduction of detergent, further establishing the point of detergent not having an individual effect on the different enzymes.
 
 \section{Discussion}
 
@@ -281,7 +292,9 @@ xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance ta
 
 
 \section{Conclusion}
-
-
-
+Using a linear model on the data set, it is shown that the enzymes, enzyme concentration, detergent pressence and the interaction between enzymes and concentration is the statistical significant variables of the experiment.
+  
+The statistical analysis proves the different types of enzymes has a different influence on the response. From our analysis it is clearly seen that the Enzyme A provides the best reponse, while Enzyme D has the worst response. Every other enzyme (B,D,E) can be categorised with a nearly identical response, and no there is no significant difference between them and their influence on the response.
+  
+The analysis also shows how the hardness and detergent influences the activity. There is clear indications of the hardness of the water having no influence on the catalytic activity at all, while detergent has large influence on the response. This influence is also seen in the 0 enzyme concentration samples.
 \end{document}
