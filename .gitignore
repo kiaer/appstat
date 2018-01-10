@@ -8,3 +8,4 @@ Sample_solutions_week_1/
 *.sty
 *.DS_Store
 .SPR.txt.kate-swp
+*.aux
