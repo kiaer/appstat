@@ -265,10 +265,8 @@ legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 @
 From this prediction, it is clearly seen that the Enzyme of type A provides the best response, followed by type B, type C and Type E with no significant difference between them. Lastly the Enzyme of type D has the worst response of all. Looking at using detergent or not, it is also clearly seen that adding detergent to the experiment will have a huge effect on the response. No enzyme shows individual response to detergent, as every enzyme is highly influenced by the presence of detergent. There is no change in the order of efficiency of enzymes on the response is seen with the introduction of detergent, further establishing the point of detergent not having an individual effect on the different enzymes. The prediction also proves the importance of concentration is higher than the enzyme type, as even the worst performing enzyme will still outperform the best at high vs. low concentrations.  
 \section{Discussion}
+When concidering the quality of the data, and whether there are systematic errors on the observations or not, the experiment setup has taken some of this into account. The main issue regarding this is that there may be different systematic errors on the different enzymes, as the enzymes has been tested on different days, and thus a "new" setup is used each time. When comparing tests containing 0 nM of enzyme and no detergent there is a variance between the different enzymes as seen in figure \ref{fig:Controlamples}. An analysis of the variance is also carried out, and results are seen in table \ref{tab:aov}.
 
-Systematic errors - Discussion of 0 Enzyme, 0 Detergent variable data, and analysis of variance of the results. 
-
-Systematic errors - can we compare the 2 sets of 0 value replications??? E.g. by splitting the data?
 
 <<control, echo=FALSE>>=
 control <- subset(det$Response, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
@@ -286,6 +284,9 @@ plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
 @
 
+The analysis shows that the variance between the controlsamples for the different enzymes is statistically significant, with a \code{p}-value of 0.0023. This should not be the case, as there are no enzymes involved in these observations, and therefore this is the strongest indication of systematic errors being present. This is, however, taken into account in the experiment setup by measuring a reference enzyme at each occation, making it possible to calibrate the measurements. These observations has not been available in the making of this report.
+
+There is a possibility that there exist more overall systematic errors affecting all measurements equally. These may be difficult to find, but in this analysis it is not a big issue. As the main aim is to compare processes and effects of different components relative to eachother, this kind of systematic errors would not affect the outcome. 
 
 \section{Conclusion}
 Using a linear model on the data set, it is shown that the enzymes, enzyme concentration, detergent pressence and the interaction between enzymes and concentration is the statistical significant variables of the experiment.
