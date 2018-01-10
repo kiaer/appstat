@@ -169,7 +169,7 @@ This model is a maximal model using all explanatory variables to model the respo
 xtable(det[147,1:7], caption = "Outlier observation 147", label = "tab:147")
 @
 
-<<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
+<<boxcox, echo=FALSE, fig.height=4, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
 boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
 @
 To look further into this observation, and decide whether it is to be excluded from the data set or not, it is compared to the other measurements made under the same conditions. This is an enzyme concentration of 2.5 nM with detergent present as seen in table \ref{tab:147}. The hardness of the water is not taken into account, as an anova analysis has proven this to be of no statistical significance with a p-value of 0.4257. (See further in Results) In figure \ref{fig:test147} mean values of the response for all enzymes are plotted together with the residuals to investigate the variance of the measurements. Enzyme E is also plotted without observation 147. When comparing the different variances the variance of enzyme E stands out a lot, and after removing observation 147 the variance is in the same order of magnitude as the other measurements. This leads to the decision to exclude this outlier.
@@ -228,11 +228,11 @@ plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 \subsection{The Linear Model}
 As a result of the analysis, the linear model consists of the coefficients seen in Table \ref{tab:sumlm}. The coefficients consists of every enzyme, the transformed concentration, presence of detergent and the interaction between the enzyme and transformed concentration. From the summary, the reference is set to enzyme A with detergent, which is clearly the best performing enzyme. Only an increase in concentration will result in a larger response given our model. Looking at \code{DetStockDet0} also shows the importance of the the presence of detergent. The largest impact on the reponse is seen when removing detergent from the experiment. Not all that suprisingly the concentration has different effects on the different enzymes, with some enzymes (A) having a larger increase in response as a result of increased concentration.  
 <<summary, results='asis', echo=FALSE>>=
-xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sumlm")
+xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sumlm", table.placement="H")
 @
 Looking at variance analysis (Tabel \ref{tab:anova}), it is clearly seen that every variable left is significant. The ANOVA table also confirms that detergent is the most influencial variable, as the sum of squares of \code{DetStock} is much larger than every other variable. The enzyme concentration is seen as the second most important, while the type of enzyme used is of less importance.
 <<anova, results='asis', echo=FALSE>>=
-xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova")
+xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova", table.placement="H")
 @
 Testing the model using the \code{drop1} with the \code{test="F"} (See Table \ref{tab:drop1}) proves that no further alterations are needed, as every variable left is significant thus further dropping variables will worsen the AIC value.
 <<drop1, results='asis', echo=FALSE>>=
