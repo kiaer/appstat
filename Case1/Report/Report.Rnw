@@ -114,16 +114,11 @@ RunDate:      Date of the experiment. (YMMDD)
 
 Cycle:        Cycle number of the particular replicant within the cycle.
 
-Response:     Amount of Protein removed in RU. (10^-^6  g/m^2)
+Response:     Amount of Protein removed in RU. ($10^{-6}  g/m^2$)
 
 Enzyme:       Identifying the particular enzyme. (A,B,C,D or E)
 
 EnzymeConc:   Enzyme concentration in nM.  (0, 2.5, 7.5 15)
-=======
-\section{Case Description}
-
-Description of data (Table)
->>>>>>> 7cb22d3ccb5fa0ac181b302902233125174cabdd
 
 DetStock:     With or without detergent. (+ or 0)
 
