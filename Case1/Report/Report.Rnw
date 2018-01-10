@@ -55,7 +55,7 @@
 \end{center}
 \begin{flushleft} \large
 \emph{Author:}\\
-Christian Mathias Rohde \textsc{Ki??r}: s123812\\
+Christian Mathias Rohde \textsc{Kiær}: s123812\\
 Per Anton \textsc{Almgren}: s170464\\
 Kristian \textsc{Maar}: s172956
 \end{flushleft}
@@ -71,7 +71,7 @@ Kristian \textsc{Maar}: s172956
 \newpage
 \section*{Summary}
 
-This statistical report investigates the performance of 5 different enzymes used in an exerimental setup to test their individual effectiveness as additives for textile cleaning compounds. A review of the available data and subsequent data transformation using the power 0.4 suggests the use of a linear regression model to test significant correlations between the variables of the enzyme type and enzyme concentration, in the presence or absence of detergent and Calcium ions. We find strong evidence showing that Enzyme A outperforms the other 4, and though there is no significant performance difference between enzymes B,C and E, enzyme D perform significantly poorer than the rest. All enzymes perform better at higher concentrations. The performance of all enzymes is significantly enhanced by the presence of detergent but the presence of Calcium ions has no significant effect.  
+This statistical report investigates the performance of 5 different enzymes used in an experimental setup to test their individual effectiveness as additives for textile cleaning compounds. A review of the available data and subsequent data transformation using the power 0.4 suggests the use of a linear regression model to test significant correlations between the variables of the enzyme type and enzyme concentration, in the presence or absence of detergent and Calcium ions. We find strong evidence showing that Enzyme A outperforms the other 4, and though there is no significant performance difference between enzymes B,C and E, enzyme D perform significantly poorer than the rest. All enzymes perform better at higher concentrations. The performance of all enzymes is significantly enhanced by the presence of detergent but the presence of Calcium ions has no significant effect.  
 
 \newpage
 \tableofcontents
@@ -89,7 +89,7 @@ library(MASS)
 
 
 An effective washing method is not only a matter of competitive edge and potential revenue for companies producing detergent and laundry products, it also provides benefits for the end consumer by offering possible reductions in both household economic and environmental impact while performing a crucial and daily task. The performance of different detergents is believed to be correlated to a range of variables such as enzymatic activity which is a catalytic process that involves the enzymatic breakdown of various staining compounds. There are many different enzymes with different properties and potential with regards to usefulness in removing stains from textiles and the presence or absence of other compounds may influence the cleaning performance both positively or negatively. 
-The aim of this report is to analyze the data obtained from an experiment conducted in November and December 2008. The dataset contains results from the testing of 5 different enzymes at different concentrations. The effects of the presence or absence of a detergent and Calcium ions are also investigated with all 5 enzymes. This analysis will attempt to reject or confirm all possible correlations between the variable combinations of enzymes, detergent and Calcium-ions. The preliminary assumption is that the cleaning solutions applied in the experiment have no significant effect on the response of an experimental proteinfilm that substitutes for a theoretical stain on a textile. If the data provided are in contradiction with this assumption we will use statistical modelleing to further reveal the possible correlations and make inference about the results.
+The aim of this report is to analyze the data obtained from an experiment conducted in November and December 2008. The data set contains results from the testing of 5 different enzymes at different concentrations. The effects of the presence or absence of a detergent and Calcium ions are also investigated with all 5 enzymes. This analysis will attempt to reject or confirm all possible correlations between the variable combinations of enzymes, detergent and Calcium-ions. The preliminary assumption is that the cleaning solutions applied in the experiment have no significant effect on the response of an experimental protein film that substitutes for a theoretical stain on a textile. If the data provided are in contradiction with this assumption we will use statistical modelling to further reveal the possible correlations and make inference about the results.
 
 
 \underline{The process will involve specifically:}
@@ -99,17 +99,17 @@ The aim of this report is to analyze the data obtained from an experiment conduc
 
 - Determining if Calcium-ions and detergent affect the catalytic activity.
 
-- Determining to what extend the catalytc activity is dependant upon enzyme concentration.
+- Determining to what extend the catalytic activity is dependent upon enzyme concentration.
 
 - Comparing the performance of the individual enzymes and showing what enzyme performed best and which performed poorest in the experiment.
 
-- Scrutenizing the dataset and methodology for indications of systematic error a discussion of the possible effects on the statistical analysis and an evaluation of the overall validity of the results.
+- Scrutinizing the data set and methodology for indications of systematic error a discussion of the possible effects on the statistical analysis and an evaluation of the overall validity of the results.
 
 
 
 \section{Case Description}
 
-The dataset contains 160 individual measurements performed during 5 days from November 25th to December 8th 2008. On each individual day only one of the total 5 enzymes was tested. The performance of each enzyme was tested in the presence and absence of detergent and Calcium ions as well as the presence or absence of the combination of both detergent and Calcium-ions. The replications of the experiment for the various combinations of variable was conducted in random order within the cycle. The data for each replication of the experiment yields the following variables:
+The data set contains 160 individual measurements performed during 5 days from November 25th to December 8th 2008. On each individual day only one of the total 5 enzymes was tested. The performance of each enzyme was tested in the presence and absence of detergent and Calcium ions as well as the presence or absence of the combination of both detergent and Calcium-ions. The replications of the experiment for the various combinations of variable was conducted in random order within the cycle. The data for each replication of the experiment yields the following variables:
 
 RunDate:      Date of the experiment. (YMMDD)
 
@@ -131,7 +131,7 @@ See table \ref{tab:sum} for R summary of the data set.
 xtable(summary(det), caption = "Summary of the data showing an even distribution of replications among the variables with 32 replications pr. day and 32 replications pr. enzyme. Though the table only shows that calcium ions and detergent was present in half the replications further scrutiny of the data reveals that all the possible presence/absence combinations are evenly distributed. While the range of response is from 0.1 to 1588 the mean = 431.6 and median = 322.4 suggests that the dataset is skewed towards lower response values as the median is significantly lower than the mean. - The Cycle and EnzymeConc values are irrelevant in the table above as the numeric values are discrete and therefors are better interpreted as factors.", label = "tab:sum")
 @
 
-The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. In the experiment a reference enzyme is placed in each experiment but the details for this procedure are not included in the dataset available for our analysis. As we have no further information about it we can only speculate how this might influence the validity of the analysis. It would be prefereable to include the data for the reference enzyme to allow for analysis of any possible interactions or effects. 
+The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succession of the varying test solutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. In the experiment a reference enzyme is placed in each experiment but the details for this procedure are not included in the data set available for our analysis. As we have no further information about it we can only speculate how this might influence the validity of the analysis. It would be preferable to include the data for the reference enzyme to allow for analysis of any possible interactions or effects. 
 
 
 <<barplotinit, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Barplot showing an overview of the response values of the different enzymes and different concentrations.">>=
@@ -146,11 +146,11 @@ par(mfrow=c(1,2),mar=c(3,3,2,1),mgp=c(2,0.7,0))
 boxplot(Response ~ EnzymeConc,det, xlab="Enzyme Concentration", ylab="Response")
 boxplot(Response ~ Enzyme, det, xlab="Enzymes", ylab="Response")
 @
-Plotting the dataset gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations.
+Plotting the data set gives an initial overview of the various enzyme responses and it is apparent that there is a difference in performance both between different enzymes as well as the individual enzymes at different concentrations.
 
-An initial description of the data is seen in Figure \ref{fig:barplotinit} and Figure \ref{fig:boxplotInit}. Looking at Figure \ref{ref:barplotinit} the plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance, while enzyme D generally seems to have the lowest response.
+An initial description of the data is seen in Figure \ref{fig:barplotinit} and Figure \ref{fig:boxplotInit}. Looking at Figure \ref{ref:barplotInit} the plot suggests a general trend of higher response values at higher concentrations. Enzyme A also seem to exhibit the highest performance, while enzyme D generally seems to have the lowest response.
 
-In Figure \ref{fig:boxplotInit} again there seems to be a significant increase in response mean values at higher enzyme concentrations. When comparing the mean values the boxplot also suggest that enzyme A outperforms the other 4 enzymes while this  enzyme E, B, C and E seems to have comparable mean values. Enzyme D still has the lowest mean value of them all.
+In Figure \ref{fig:boxplotInit} again there seems to be a significant increase in response mean values at higher enzyme concentrations. When comparing the mean values the box plot also suggest that enzyme A outperforms the other 4 enzymes while this  enzyme E, B, C and E seems to have comparable mean values. Enzyme D still has the lowest mean value of them all.
 
 <<echo=FALSE, results='hide'>>=
 det$Rpower <- det$Response^0.4
@@ -168,7 +168,7 @@ lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
 library(car)
 qqPlot(det$Response,ylab = "Response")
 @
-This model is a maximal model using all explanatory variables to model the response in the experiments. To find the appropriate transformation a boxcox plot is made (figure \ref{fig:boxcox}), and based on this a transformation of the \code{Response} observarions using the power of $0.4$ is chosen. Now a new linear model is formed using the new transformation. Further analysis of residuals vs. leverage in the new model showed that a transformation of the enzyme concentrations would be appropriate. Now the power of 0.4 is also applied to the enzyme concentrations and another model is set up using this as well. When analyzing this model an outlier becomes apparent. This is observation 147:
+This model is a maximal model using all explanatory variables to model the response in the experiments. To find the appropriate transformation a box cox plot is made (figure \ref{fig:boxcox}), and based on this a transformation of the \code{Response} observations using the power of $0.4$ is chosen. Now a new linear model is formed using the new transformation. Further analysis of residuals vs. leverage in the new model showed that a transformation of the enzyme concentrations would be appropriate. Now the power of 0.4 is also applied to the enzyme concentrations and another model is set up using this as well. When analyzing this model an outlier becomes apparent. This is observation 147:
 <<observation 147, results='asis',echo=FALSE>>=
 xtable(det[147,1:7], caption = "Outlier observation 147", label = "tab:147")
 @
@@ -230,11 +230,11 @@ plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 
 \section{Results}
 \subsection{The Linear Model}
-As a result of the analysis, the linear model consists of the coefficients seen in Table \ref{tab:sumlm}. The coefficients consists of every enzyme, the transformed concentration, presence of detergent and the interaction between the enzyme and transformed concentration. From the summary, the reference is set to enzyme A with detergent, which is clearly the best performing enzyme. Only an increase in concentration will result in a larger response given our model. Looking at \code{DetStockDet0} also shows the importance of the the presence of detergent. The largest impact on the reponse is seen when removing detergent from the experiment. Not all that suprisingly the concentration has different effects on the different enzymes, with some enzymes (A) having a larger increase in response as a result of increased concentration.  
+As a result of the analysis, the linear model consists of the coefficients seen in Table \ref{tab:sumlm}. The coefficients consists of every enzyme, the transformed concentration, presence of detergent and the interaction between the enzyme and transformed concentration. From the summary, the reference is set to enzyme A with detergent, which is clearly the best performing enzyme. Only an increase in concentration will result in a larger response given our model. Looking at \code{DetStockDet0} also shows the importance of the the presence of detergent. The largest impact on the response is seen when removing detergent from the experiment. Not all that surprisingly the concentration has different effects on the different enzymes, with some enzymes (A) having a larger increase in response as a result of increased concentration.  
 <<summary, results='asis', echo=FALSE>>=
 xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sumlm", table.placement="H")
 @
-Looking at variance analysis (Tabel \ref{tab:anova}), it is clearly seen that every variable left is significant. The ANOVA table also confirms that detergent is the most influencial variable, as the sum of squares of \code{DetStock} is much larger than every other variable. The enzyme concentration is seen as the second most important, while the type of enzyme used is of less importance.
+Looking at variance analysis (Table \ref{tab:anova}), it is clearly seen that every variable left is significant. The ANOVA table also confirms that detergent is the most influential variable, as the sum of squares of \code{DetStock} is much larger than every other variable. The enzyme concentration is seen as the second most important, while the type of enzyme used is of less importance.
 <<anova, results='asis', echo=FALSE>>=
 xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova", table.placement="H")
 @
@@ -243,7 +243,7 @@ Testing the model using the \code{drop1} with the \code{test="F"} (See Table \re
 xtable(drop1(lm4, test="F"), caption = "Drop 1 tabel with F-test", label = "tab:drop1", table.placement="H")
 @
 \subsection{Influence of Calcium and Detergent}
- Looking at the linear model, it is clearly seen that the hardness of the water has no influence on the response levels. The \code{CaStock} is removed early in the model, and even in the first analysis step it is seen to have a \code{p}-value of nearly 0.7. This is further seen in the boxplot \ref{fig:detcastock}, where we can clearly see no significant differnce in having Ca present.
+ Looking at the linear model, it is clearly seen that the hardness of the water has no influence on the response levels. The \code{CaStock} is removed early in the model, and even in the first analysis step it is seen to have a \code{p}-value of nearly 0.7. This is further seen in the box plot \ref{fig:detcastock}, where we can clearly see no significant difference in having Ca present.
  <<detcastock, echo=FALSE, fig.height=4, fig.cap="Response as a boxplots with CaStock and DetStock", fig.pos="H">>=
  par(mfrow=c(1,2))
  boxplot(Response ~  CaStock, det, xlab="Calcium presence", ylab="Response")
@@ -269,7 +269,11 @@ legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 @
 From this prediction, it is clearly seen that the Enzyme of type A provides the best response, followed by type B, type C and Type E with no significant difference between them. Lastly the Enzyme of type D has the worst response of all. Looking at using detergent or not, it is also clearly seen that adding detergent to the experiment will have a huge effect on the response. No enzyme shows individual response to detergent, as every enzyme is highly influenced by the presence of detergent. There is no change in the order of efficiency of enzymes on the response is seen with the introduction of detergent, further establishing the point of detergent not having an individual effect on the different enzymes. The prediction also proves the importance of concentration is higher than the enzyme type, as even the worst performing enzyme will still outperform the best at high vs. low concentrations.  
 \section{Discussion}
+<<<<<<< HEAD
 When concidering the quality of the data, and whether there are systematic errors on the observations or not, the experiment setup has taken some of this into account. The main issue regarding this is that there may be different systematic errors on the different enzymes, as the enzymes has been tested on different days, and thus a "new" setup is used each time. When comparing tests containing 0 nM of enzyme and no detergent there is a variance between the different enzymes as seen in figure \ref{fig:Controlsamples}. An analysis of the variance is also carried out, and results are seen in table \ref{tab:aov}.
+=======
+When considering the quality of the data, and whether there are systematic errors on the observations or not, the experiment setup has taken some of this into account. The main issue regarding this is that there may be different systematic errors on the different enzymes, as the enzymes has been tested on different days, and thus a "new" setup is used each time. When comparing tests containing 0 nM of enzyme and no detergent there is a variance between the different enzymes as seen in figure \ref{fig:Controlamples}. An analysis of the variance is also carried out, and results are seen in table \ref{tab:aov}.
+>>>>>>> 85009c891619cef9a8e79449ad31385020056edd
 
 
 <<control, echo=FALSE>>=
@@ -288,14 +292,14 @@ plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance tabel", label = "tab:aov")
 @
 
-The analysis shows that the variance between the controlsamples for the different enzymes is statistically significant, with a \code{p}-value of 0.0023. This should not be the case, as there are no enzymes involved in these observations, and therefore this is the strongest indication of systematic errors being present. This is, however, taken into account in the experiment setup by measuring a reference enzyme at each occation, making it possible to calibrate the measurements. These observations has not been available in the making of this report.
+The analysis shows that the variance between the control samples for the different enzymes is statistically significant, with a \code{p}-value of 0.0023. This should not be the case, as there are no enzymes involved in these observations, and therefore this is the strongest indication of systematic errors being present. This is, however, taken into account in the experiment setup by measuring a reference enzyme at each occasion, making it possible to calibrate the measurements. These observations has not been available in the making of this report.
 
-There is a possibility that there exist more overall systematic errors affecting all measurements equally. These may be difficult to find, but in this analysis it is not a big issue. As the main aim is to compare processes and effects of different components relative to eachother, this kind of systematic errors would not affect the outcome. 
+There is a possibility that there exist more overall systematic errors affecting all measurements equally. These may be difficult to find, but in this analysis it is not a big issue. As the main aim is to compare processes and effects of different components relative to each other, this kind of systematic errors would not affect the outcome. 
 
 \section{Conclusion}
-Using a linear model on the data set, it is shown that the enzymes, enzyme concentration, detergent pressence and the interaction between enzymes and concentration is the statistical significant variables of the experiment.
+Using a linear model on the data set, it is shown that the enzymes, enzyme concentration, detergent presence and the interaction between enzymes and concentration is the statistical significant variables of the experiment.
   
-The statistical analysis proves the different types of enzymes has a different influence on the response. From our analysis it is clearly seen that the Enzyme A provides the best reponse, while Enzyme D has the worst response. Every other enzyme (B,D,E) can be categorised with a nearly identical response, and no there is no significant difference between them and their influence on the response. It is also worth noting that the influence of concentration is higher than that of the type of enzyme. A "worse" enzyme will outperform the better one at higher concentration levels, and therefore considering using the enzymes with a lower response, but with a higher concentration can be considered. This could be investigated further if cost of the enzymes is introduced to the problem.
+The statistical analysis proves the different types of enzymes has a different influence on the response. From our analysis it is clearly seen that the Enzyme A provides the best response, while Enzyme D has the worst response. Every other enzyme (B,D,E) can be categorized with a nearly identical response, and no there is no significant difference between them and their influence on the response. It is also worth noting that the influence of concentration is higher than that of the type of enzyme. A "worse" enzyme will outperform the better one at higher concentration levels, and therefore considering using the enzymes with a lower response, but with a higher concentration can be considered. This could be investigated further if cost of the enzymes is introduced to the problem.
   
 The analysis also shows how the hardness and detergent influences the activity. There is clear indications of the hardness of the water having no influence on the catalytic activity at all, while detergent has large influence on the response. This influence is also seen in the 0 enzyme concentration samples.
 \newpage
