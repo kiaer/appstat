@@ -154,7 +154,7 @@ det$concpow <- det$EnzymeConc^0.4
 lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
 @
 
-<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H" , fig.cap="Plots showing the mean value and residuals for all enzymes when in concentration of 2.5 nM and detergent present. Enzyme E is also presented without the suspected outlier.">>=
+<<plots showing outlier, echo=FALSE, fig.height=5, fig.pos="H" , fig.cap="Plots showing the mean value and residuals for all enzymes when in concentration of 2.5 nM and detergent present. Enzyme E is also presented without the suspected outlier. These plots show that enzyme E originally has a much larger variance, but after removing the suspected outlier the variance is in the same order of magnitude as the rest.">>=
 test<-subset.data.frame(det,det$DetStock=="Det+" & det$EnzymeConc==2.5)
 par(mfrow=c(2,3))
 plot(1:4,testA<-subset(test$Response,test$Enzyme=="A"),ylab="Response"
@@ -195,9 +195,9 @@ for(i in c(1,2,4)) lines(c(i,i),c(mean(e2),testE[i]))
 
 @
 
-<<Normality, echo=FALSE,fig.cap="figurtekst", fig.height=4>>=
+<<Normality, echo=FALSE,fig.cap="Normality Q-Q plot of the response parameter of the data. This data is not normally distributed, which indicates that a transformation of the data is needed in order to make a linear model.", fig.height=4>>=
 library(car)
-qqPlot(det$Response)
+qqPlot(det$Response,ylab = "Response")
 @
 \section{Analysis}
 <<boxcox, echo=FALSE, fig.height=5, out.width='.9\\linewidth', fig.cap="Boxcox Transformation of LM1. Based on this result a lambda value of 0.4 is chosen to transform the response observations.", fig.pos="H">>=
