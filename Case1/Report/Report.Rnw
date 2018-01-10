@@ -225,13 +225,12 @@ plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
 @
 
 \section{Results}
-
-As a result of the analysis, the linear mode
-
+\subsection{The Linear Model}
+As a result of the analysis, the linear model consists of the coefficients seen in Table \ref{tab:sumlm}. The coefficients consists of every enzyme, the transformed concentration, presence of detergent and the interaction between the enzyme and transformed concentration. From the summary, the reference is set to enzyme A with detergent, which is clearly the best performing enzyme. Only an increase in concentration will result in a larger response given our model. Looking at \code{DetStockDet0} also shows the importance of the the presence of detergent. The largest impact on the reponse is seen when removing detergent from the experiment. Not all that suprisingly the concentration has different effects on the different enzymes, with some enzymes (A) having a larger increase in response as a result of increased concentration.  
 <<summary, results='asis', echo=FALSE>>=
-xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sum")
+xtable(summary(lm4), caption = "Summary of the linear model", label = "tab:sumlm")
 @
-Looking at variance analysis (Tabel \ref{tab:anova}), it is clearly seen
+Looking at variance analysis (Tabel \ref{tab:anova}), it is clearly seen that every variable left is significant. The ANOVA table also confirms that detergent is the most influencial variable, as the sum of squares of \code{DetStock} is much larger than every other variable. The enzyme concentration is seen as the second most important, while the type of enzyme used is of less importance.
 <<anova, results='asis', echo=FALSE>>=
 xtable(anova(lm4), caption = "Anova tabel", label = "tab:anova")
 @
@@ -264,8 +263,7 @@ matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), ylab="Response", xlab="Conc
 matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),matrix(pred[,2],nrow=16,byrow=TRUE),matrix(pred[,3],nrow=16,byrow=TRUE)),col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
 legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
 @
-From this prediction, it is clearly seen that the Enzyme of type A provides the best response, followed by type B, type C and Type E with no significant difference between them. Lastly the Enzyme of type D has the worst response of all. Looking at using detergent or not, it is also clearly seen that adding detergent to the experiment will have a huge effect on the response. No enzyme shows individual response to detergent, as every enzyme is highly influenced by the presence of detergent. There is no change in the order of efficiency of enzymes on the response is seen with the introduction of detergent, further establishing the point of detergent not having an individual effect on the different enzymes.
-
+From this prediction, it is clearly seen that the Enzyme of type A provides the best response, followed by type B, type C and Type E with no significant difference between them. Lastly the Enzyme of type D has the worst response of all. Looking at using detergent or not, it is also clearly seen that adding detergent to the experiment will have a huge effect on the response. No enzyme shows individual response to detergent, as every enzyme is highly influenced by the presence of detergent. There is no change in the order of efficiency of enzymes on the response is seen with the introduction of detergent, further establishing the point of detergent not having an individual effect on the different enzymes. The prediction also proves the importance of concentration is higher than the enzyme type, as even the worst performing enzyme will still outperform the best at high vs. low concentrations.  
 \section{Discussion}
 
 Systematic errors - Discussion of 0 Enzyme, 0 Detergent variable data, and analysis of variance of the results. 
@@ -292,7 +290,116 @@ xtable(aov(control ~ EnzymeType, data = det), caption = "Analysis of variance ta
 \section{Conclusion}
 Using a linear model on the data set, it is shown that the enzymes, enzyme concentration, detergent pressence and the interaction between enzymes and concentration is the statistical significant variables of the experiment.
   
-The statistical analysis proves the different types of enzymes has a different influence on the response. From our analysis it is clearly seen that the Enzyme A provides the best reponse, while Enzyme D has the worst response. Every other enzyme (B,D,E) can be categorised with a nearly identical response, and no there is no significant difference between them and their influence on the response.
+The statistical analysis proves the different types of enzymes has a different influence on the response. From our analysis it is clearly seen that the Enzyme A provides the best reponse, while Enzyme D has the worst response. Every other enzyme (B,D,E) can be categorised with a nearly identical response, and no there is no significant difference between them and their influence on the response. It is also worth noting that the influence of concentration is higher than that of the type of enzyme. A "worse" enzyme will outperform the better one at higher concentration levels, and therefore considering using the enzymes with a lower response, but with a higher concentration can be considered. This could be investigated further if cost of the enzymes is introduced to the problem.
   
 The analysis also shows how the hardness and detergent influences the activity. There is clear indications of the hardness of the water having no influence on the catalytic activity at all, while detergent has large influence on the response. This influence is also seen in the 0 enzyme concentration samples.
+\newpage
+\section{Appendix}
+<<eval=FALSE>>=
+det <- read.table("SPR.txt",header=TRUE, 
+                  colClasses = c("factor", "numeric", 
+                                 "numeric", "factor", "numeric", "factor", "factor"))
+det$RunDate <- factor(det$RunDate,
+                      labels = c("25/11/2008","27/11/2008", 
+                                 "3/12/2008", "5/12/2008", "8/12/2008"))
+
+plot(det, panel=panel.smooth)
+summary(det)
+barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),beside=TRUE, 
+        legend = c("0", "2.5", "7.5", "15"))
+
+barplot(tapply(det$Response,list(det$EnzymeConc, det$Enzyme),mean),
+        beside=TRUE, xlab="Enzymes", ylab="Response", 
+        col=c("snow1", "snow2", "snow3", "snow4") )
+legend(18, 1000, col=c("snow1", "snow2", "snow3", "snow4"),
+       legend =  c("0", "2.5", "7.5", "15"), lty = 1)
+
+
+
+lwd = par(mfrow=c(1,1),mar=c(3,3,2,1),mgp=c(2,0.7,0))
+boxplot(Response ~ EnzymeConc,det)
+boxplot(Response ~ Enzyme, det)
+
+
+par(mfrow=c(2,2))
+lm1 <- lm(Response ~ RunDate+Cycle+Enzyme*EnzymeConc+DetStock+CaStock, det)
+summary(lm1)
+plot(lm1)
+anova(lm1)
+lm2 <- step(lm1)
+summary(lm2)
+anova(lm2)
+drop1(lm2, test="F")
+qqPlot(lm4)
+lmt <- lm(Response ~ Enzyme * EnzymeConc, det)
+library(MASS)
+par(mfrow=c(1,1))
+boxcox(lm1, data=det)
+boxcox(lm1, lambda = seq(-0.5, 1, length.out = 20), data=det)
+det$concpow <- det$EnzymeConc^0.4
+
+plot(det$concpow, det$Rpower)
+
+det$logR <- log(det$Response)
+lm3<- step(lm(logR ~ RunDate+Cycle+Enzyme*EnzymeConc*DetStock*CaStock, det, subset = -14))
+par(mfrow=c(2,2))
+plot(lm3, col=as.numeric(as.factor(det$EnzymeConc[-14])))
+summary(lm3)
+anova(lm3)
+AIC(lm3)
+drop1(lm3, test="F")
+coef(lm3)
+
+det$Rpower <- det$Response^0.4
+lm4<- step(lm(Rpower ~ RunDate+Cycle+Enzyme*concpow+DetStock+CaStock, det, subset = -147))
+par(mfrow=c(2,2))
+plot(lm4, col=as.numeric(as.factor(det$EnzymeConc[-147])))
+summary(lm4)
+anova(lm4)
+AIC(lm4)
+AIC(lm3)
+drop1(lm4, test="F")
+summary(lm5<-update(lm4,.~.-CaStock))
+drop1(lm5, test="F")
+summary(lm6<-update(lm5,.~.-DetStock:CaStock))
+anova(lm6)
+anova(lm1)
+
+
+anova(lm3, lm5)
+AIC(lm3)
+AIC(lm5)
+
+plot(det$EnzymeConc, exp(det$logR), col=as.numeric(det$EnzymeA), pch=19)
+interaction.plot(det$EnzymeConc, det$Enzyme, det$Rpow, ylim = c(0,1500))
+
+# One style
+# Calculating 95% confidence intervals:
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme), 
+                    concpow=seq(0,3, 0.2), DetStock="Det0", CaStock="Ca0")
+pred<-predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
+# Plotting
+par(mfrow=c(1,2))
+matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), 
+        ylab="Response", xlab="Concentration", main="Det0")
+matlines((0:15), cbind(matrix(pred[,1],nrow=16,byrow=TRUE),
+                       matrix(pred[,2],nrow=16,byrow=TRUE),
+                       matrix(pred[,3],nrow=16,byrow=TRUE)),
+         col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
+legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
+
+pred.d<-expand.grid(Enzyme=levels(det$Enzyme),
+                    concpow=seq(0,3,0.2),DetStock="Det+", CaStock="Ca0")
+pred<- predict(lm4,pred.d,int="c")^(5/2) # Predictions on original scale
+matplot(c(0,15),range(pred),type="n",ylim=c(0,2000), 
+        ylab="Response", xlab="Concentration", main="Det+")
+matlines(0:15, cbind(matrix(pred[,1],nrow=16,byrow=TRUE),
+                     matrix(pred[,2],nrow=16,byrow=TRUE),
+                     matrix(pred[,3],nrow=16,byrow=TRUE)),
+         col=2:6,lty=rep(c(1,2,2),each=5),lwd=1)
+legend("topleft",legend=levels(det$Enzyme),lty=1,col=2:6)
+
+
+@
+
 \end{document}
