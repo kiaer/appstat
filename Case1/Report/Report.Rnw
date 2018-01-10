@@ -123,10 +123,7 @@ DetStock:     With or without detergent. (+ or 0)
 CaStock:      With or without Calcium ions. (+ or 0)
 
 
-
 The sum of replications yields a total of 160 observations divided evenly among the enzymes giving 32 replications pr. enzyme and 32 coinciding replications of the experiment on each of the 5 days. The number of replications pr. enzyme is sufficient to perform statistical analysis. The mitigation of systematic error is strengthened by randomizing the succesion of the variyng testsolutions throughout the individual days. Each unique combination of enzyme, enzyme concentration, detergent and calcium ions is measured twice, which enhances the strength of the data. However as each enzyme is only tested on one particular day and no two enzymes are tested on the same day there could possibly be a skew in the data from each day due to temporal variation in the experimental conditions. As the experiment isolates the all replications of the individual enzymes to a single day, any systematic error could make a difference in enzyme response indistinguishable from any systematic error arising from conditions particular to the different days. 
-
-
 
 
 <<initSum, results='asis', echo=FALSE>>=
