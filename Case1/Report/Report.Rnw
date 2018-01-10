@@ -280,7 +280,7 @@ EnzymeType <- subset(det$Enzyme, det$EnzymeConc == 0.0 & det$DetStock == "Det0")
 fit <- aov(control ~ EnzymeType, data = det)
 @
 
-<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme, Ca. or Det.", echo=FALSE, fig.pos="h!", fig.height=4>>=
+<<Controlsamples,fig.cap="Boxplot of samples with no Enzyme or Det.", echo=FALSE, fig.pos="h!", fig.height=4>>=
 plot(EnzymeType, control,ylab="Response", xlab="Enzyme")
 @
 
