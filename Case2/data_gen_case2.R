@@ -29,13 +29,16 @@ post2005_ny4<-post2005_ny3
 post2005_ny4$Provedato<-as.Date(post2005_ny4$Provedato,format="%m/%d/%y")
 
 ##step5
-pre2002_ny5<-pre2002_ny4[c("CHR_NR","EPINR","JNR","MATR","BAKTFUND","PRV_DATO","region")]
+pre2002_ny5<-pre2002_ny4[c("CHR_NR","EPINR","JNR","MATR","BAKTFUND","PRV_DATO",
+                           "region")]
 names(pre2002_ny5)<- c("chrnr","epinr","jnr","matr","resultat","prvdato","region")
 
-data_0205_ny5<-data_0205_ny4[c("Chrnr","Epi.nr","Jnr","Materialeart","Resultat","Prvdato","region")]
+data_0205_ny5<-data_0205_ny4[c("Chrnr","Epi.nr","Jnr","Materialeart","Resultat",
+                               "Prvdato","region")]
 names(data_0205_ny5)<- c("chrnr","epinr","jnr","matr","resultat","prvdato","region")
 
-post2005_ny5<-post2005_ny4[c("Chrnr","Epinr","Jnr","Materialeart","Tolkning","Provedato","region")]
+post2005_ny5<-post2005_ny4[c("Chrnr","Epinr","Jnr","Materialeart","Tolkning",
+                             "Provedato","region")]
 names(post2005_ny5)<- c("chrnr","epinr","jnr","matr","resultat","prvdato","region")
 
 ##step6
@@ -48,11 +51,14 @@ campy7<-campy7[!is.na(campy$epinr),]
 ##step8
 campy8<-campy7
 
-levels(campy8$resultat) <- list("NEG"=levels(campy8$resultat)[c(1,10,12)], "POS"=levels(campy8$resultat)[c(2,3,4,5,6,7,8,9,11,13)])
+levels(campy8$resultat) <- list("NEG"=levels(campy8$resultat)[c(1,10,12)], 
+                                "POS"=levels(campy8$resultat)
+                                [c(2,3,4,5,6,7,8,9,11,13)])
 
 ##step9
 campy9<-campy8
-campy9<-subset.data.frame(campy9,campy9$matr==c("Kloaksvaber","Svaberpr<c3><b8>ve","766","772"))
+campy9<-subset.data.frame(campy9,campy9$matr==c("Kloaksvaber","Svaberpr<c3><b8>ve",
+                                                "766","772"))
 
 
 #step10 if time permits....
@@ -60,8 +66,8 @@ campy9<-subset.data.frame(campy9,campy9$matr==c("Kloaksvaber","Svaberpr<c3><b8>v
 #step11
 campy11<-campy9
 #campy11$ugenr<-strftime(as.POSIXct(campy9$prvdato),format = "%V")
-campy11$ugenr<-as.numeric(ceiling(difftime(strptime(campy11$prvdato,format = "%Y-%m-%d"),
-                                           strptime(1997-12-29,format="%Y-%m-%d"),
+campy11$ugenr<-as.numeric(ceiling(difftime(campy11$prvdato,
+                                           strptime("19971229",format="%Y%m%d"),
                                            units="weeks")))
 
 #step12
@@ -70,22 +76,29 @@ campy12<-subset.data.frame(campy11,campy11$prvdato>="1997-12-29")
 #step13
 jnr1<-campy12$jnr[duplicated(campy12$jnr)]
 jnr2<-unique(jnr1)
-campy13<-subset.data.frame(campy12,!campy12$jnr==jnr2)
+campy13<-subset.data.frame(campy12,!(campy12$jnr %in% jnr2))
 
-a=c("A","B","C","A","D","E","A","A","B","F","B")
-a1<-a[duplicated(a)]
-a
-a11
-a11<-unique(a1)
-a2<-subset(a,a!=a11)
-a2
-a3=subset(a,!match(a,a11))
-a3
+
 #?????
 #step14
-
+campy14<-campy13
 #step15
 
+#campy15<-subset.data.frame(campy14,campy14$chrnr)
 
+campy15<-campy14[campy14$chrnr %in% names(which(table(campy14$chrnr) >= 10)), ]
 
+#step16
+tot = list()
+pos = list()
 
+for (i in 1:max(campy15$ugenr)){
+  tot[i]  <- length(which(campy15$ugenr == i))
+  pos[i] <- length(which(campy15$ugenr == i & campy15$resultat == "POS"))
+}
+sum_camp <- data.frame(unlist(tot, recursive = TRUE, use.names = TRUE),
+                       unlist(pos, recursive = TRUE, use.names = TRUE))
+colnames(sum_camp) <- c("Total", "Positive")
+
+write.csv(campy15, file="final_data.csv")
+write.csv(sum_camp, file="weekly_pos.csv")
