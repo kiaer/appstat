@@ -1,5 +1,3 @@
-setwd("/Users/Anton/Documents/statistik/to_share_2018")
-
 pre2002<-read.table("campy_pre2002.txt", header = TRUE,sep = "\t")
 
 data_0205<-read.csv("campy_2002-2005.csv")
@@ -57,7 +55,7 @@ levels(campy8$resultat) <- list("NEG"=levels(campy8$resultat)[c(1,10,12)],
 
 ##step9
 campy9<-campy8
-campy9<-subset.data.frame(campy9,campy9$matr==c("Kloaksvaber","Svaberpr<c3><b8>ve",
+campy9<-subset.data.frame(campy9,campy9$matr%in%c("Kloaksvaber","Svaberprøve",
                                                 "766","772"))
 
 
@@ -72,6 +70,7 @@ campy11$ugenr<-as.numeric(ceiling(difftime(campy11$prvdato,
 
 #step12
 campy12<-subset.data.frame(campy11,campy11$prvdato>="1997-12-29")
+#campy12 <- campy11
 
 #step13
 jnr1<-campy12$jnr[duplicated(campy12$jnr)]
@@ -99,6 +98,8 @@ for (i in 1:max(campy15$ugenr)){
 sum_camp <- data.frame(unlist(tot, recursive = TRUE, use.names = TRUE),
                        unlist(pos, recursive = TRUE, use.names = TRUE))
 colnames(sum_camp) <- c("Total", "Positive")
+
+sum(sum_camp$Total)
 
 write.csv(campy15, file="final_data.csv")
 write.csv(sum_camp, file="weekly_pos.csv")
