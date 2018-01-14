@@ -1,1 +1,22 @@
 \section{Case Description}
+
+The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also meged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2008 and after merging and cleaning up the data it ends up consisting of the following:
+
+\code{year}:      The year of the sampling
+
+\code{week}:      The week of the year 
+
+\code{aveTemp}    Average temperature per week [^\circ C]
+
+\code{maxTemp}    Maximum temperature per week [^\circ C]
+
+\code{relHum}     Avarage weekly relative humidity [\%]
+
+\code{sunHours}   Hours of sunshine per week [h]
+
+\code{precip}     Precipitation per week [mm]
+
+\code{total}      Total number of sampled flocks per week
+
+\code{pos}        Total number of flocks tested positive for Campylobacter per week
+
