@@ -130,7 +130,23 @@ lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], r
 
 <<Introduction, child='introduction.Rnw'>>=
 @
+
+
+
+<<>>
+boxplot(pos/total ~ week, camp)
+
+@
+
+
+
+
+
 <<CaseDescription, child='case.Rnw'>>=
+
+plot(camp$week, camp$aveTemp)
+plot(camp$week, camp$pos/camp$total)
+
 @
 <<StatisticalAnal, child='analysis.Rnw'>>=
 @

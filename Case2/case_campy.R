@@ -9,6 +9,11 @@ library(lattice)
 summary(camp)
 #plot(camp, panel=panel.smooth)
 
+boxplot(pos/total ~ week, camp)
+
+plot(camp$week, camp$aveTemp)
+plot(camp$week, camp$pos/camp$total)
+
 lm1 <- lm((pos / total) ~ (I(aveTemp^2) + maxTemp + relHum + sunHours + precip + week)^2, data=camp)
 par(mfrow=c(2,2))
 plot (lm1)
