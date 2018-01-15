@@ -1,14 +1,23 @@
 climate = read.table("climate.txt", header=T, sep = "\t")
 weekly = read.csv("weekly_pos.csv", header=T)
+camp = read.table("case2regions4.txt", header=T, sep = "\t")
 library(MASS)
-camp <- data.frame(weekly, climate)
+library(car)
+library(lattice)
+#camp <- data.frame(weekly, climate)
 
 summary(camp)
-plot(camp, panel=panel.smooth)
+#plot(camp, panel=panel.smooth)
 
-lm1 <- lm((Positive / Total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week)^3, data=camp)
+boxplot(pos/total ~ week, camp)
+
+plot(camp$week, camp$aveTemp)
+plot(camp$week, camp$pos/camp$total)
+
+lm1 <- lm((pos / total) ~ (I(aveTemp^2) + maxTemp + relHum + sunHours + precip + week)^2, data=camp)
 par(mfrow=c(2,2))
 plot (lm1)
+residualPlots(lm1)
 summary(lm1)
 boxcox(lm1)
 
@@ -47,29 +56,90 @@ stepP <- function(object, level=0.05, verbose=FALSE){
 
 mod <- stepP(lm2)
 lm3 <- mod$object
-anova(lm3)
-drop1(lm3, test = "F")
-lm4 <- update(lm3, .~. -aveTemp:maxTemp:sunHours)
-drop1(lm4, test="F")
-lm5 <- step(lm4)
-drop1(lm5, test="F")
-lm6 <- update(lm5, .~. -maxTemp:sunHours)
-drop1(lm6, test="F")
-lm7 <- update(lm6, .~. -aveTemp:sunHours)
-drop1(lm7, test="F")
-lm8 <- update(lm7, .~. -maxTemp)
-drop1(lm8, test="F")
-anova(lm8)
-lm9 <- update(lm8, .~. -relHum:precip)
-drop1(lm9, test="F")
-lm10 <- update(lm9, .~. -aveTemp:relHum:precip)
-drop1(lm10, test="F")
-lm11 <- update(lm10, .~. -aveTemp:precip)
-drop1(lm11, test="F")
-anova(lm11)
-lm12 <- update(lm11, .~. -sunHours)
-drop1(lm12, test="F")
-anova(lm12)
 
 par(mfrow=c(2,2))
 plot(lm12)
+residualPlots(lm12)
+
+a1 <- lm((pos / total)^0.7 ~ (maxTemp + relHum + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset= c(-496))
+par(mfrow=c(2,2))
+plot (a1)
+summary(a1)
+boxcox(a1)
+residualPlots(a1)
+
+a3 <- stepP(a1)$object
+drop1(a3, test="F")
+anova(a3)
+summary(a3)
+
+b1 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum   + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset = -496)
+par(mfrow=c(2,2))
+plot(b1)
+b2 <- stepP(b1)$object
+summary(b2)
+
+anova(a3,b2)
+
+
+lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], ref.values=seq(min(data[[reference]]),max(data[[reference]]),length=30)){
+  pdata<-data.frame(reference=ref.values)
+  names(pdata)<-reference
+  for(i in others){
+    lmtmp<-lm(as.formula(paste(i,"~",reference)),data)
+    pdata[[i]]<-predict(lmtmp,newdata=pdata[reference])
+  }
+  return(pdata)
+}
+par(mfrow=c(1,1))
+plot((pos / total) ~ aveTemp,data=camp)
+
+campy <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=-5:21)
+campyb <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=-5:21)
+
+pred.campy<-predict(b2, int="p",newdata=campy)
+pred.campya<- predict(a3, int="p",newdata=campy)
+matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
+matlines(campy$aveTemp,pred.campya^(10/7),lty=c(1,2,2),col=2,lwd=2)
+
+# x1p <- 0:30
+# x2p <- 0:30
+campy <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=10:20)
+pred.campy <- expand.grid(aveTemp=campy$aveTemp, relHum =campy$relHum, maxTemp = campy$maxTemp, sunHours=campy$sunHours, precip = campy$precip)
+# ## Then predicting each grid point:
+pred.campy$fit <- predict(a3, int = "p", newdata=pred.data)
+pred.campy$fit
+#wireframe(fit ~ aveTemp * precip, pred.data, scales = list(arrows = FALSE), drape=TRUE)
+#levelplot(fit^(10/7) ~ maxTemp * relHum, pred.data)
+
+# a2 <- step(a1)
+# a3 <- stepP(a2)$object
+# anova(a3)
+# drop1(a3, test="F")
+# a4 <- update(a3, .~. -relHum)
+# drop1(a4, test="F")
+# anova(a4)
+# a5 <- stepP(a4)$object
+# anova(a5)
+# a6 <- update(a5, .~. -sunHours)
+# drop1(a6, test="F")
+# anova(a6)
+# a7 <- update(a6, .~. -aveTemp:precip)
+# drop1(a7, test="F")
+# a8 <- stepP(a7)$object
+# anova(a8)
+
+# residualPlots(a8)
+# plot(a8)
+# drop1(a8, test="F")
+# summary(a8)
+# coef(a8)
+# 
+# t4 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week + I(aveTemp^2))^3, data=facit)
+# par(mfrow=c(2,2))
+# plot(t3)
+# boxcox(a3, lambda = seq(0, 1, length.out = 20))
+# 
+# t4 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum + sunHours + precip + week + I(aveTemp^2))^3, data=facit)
+# par(mfrow=c(2,2))
+# plot(t4)
