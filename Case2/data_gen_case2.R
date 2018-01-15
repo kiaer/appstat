@@ -56,7 +56,7 @@ levels(campy8$resultat) <- list("NEG"=levels(campy8$resultat)[c(1,10,12)],
 ##step9
 campy9<-campy8
 campy9<-subset.data.frame(campy9,campy9$matr%in%c("Kloaksvaber","Svaberprøve",
-                                                "766","772"))
+                                                  "766","772"))
 
 
 #step10 if time permits....
