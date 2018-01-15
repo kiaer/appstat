@@ -1,1 +1,14 @@
 \section{Introduction}
+
+<<Introduction, child='introduction.Rnw'>>=
+@
+
+
+
+
+<<boxplotInit, echo=FALSE, fig.height=3, fig.pos="H", fig.cap="Boxplot showing the fraction of infected broiler flocks in each week from 1998-2008">>=
+par(mfrow=c(1,1))
+boxplot(pos/total ~ week, camp,  xlab="Week number", ylab="Proportion of Camp. pos. flocks")
+
+@
+
