@@ -70,17 +70,11 @@ pred.campyb<- predict(a3, int="p",newdata=campyb)
 #matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
 matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 @
-<<<<<<< HEAD
+
 From Figure \ref{fig:Prediction} we can confirm that temperature has a larger impact on the prorportion of infected than the sun hours according to our model.
 
 From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the proportion infected.
 <<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours">>=
-=======
-From Figure \ref{fig:Prediction} we can see temperature has a larger impact on the and steeper increase than sun hours according to our model.
-
-From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the infected. 
-<<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours", fig.height=4>>=
->>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
 p.sunHours <- seq(0,100,by = 1)
 p.aveTemp <- seq(0, 22)
 par(mfrow=c(1,1))
@@ -102,11 +96,8 @@ points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
 Looking at Figure \ref{fig:imageplot}, the prediction shows flaws in our model, with predictions with a proportion of more than one. Still we can use it to see the general trend, sun hours and average temperature follows is interacting. It further proves the point of temperature being the main influence on infected flocks, as while sun hours has an effect, it doesn't increase the proportion of positive flocks in nearly the same manner as temperature. 
 
 \subsection{Regional effects on positive flocks}
-<<<<<<< HEAD
-In order to investigate whether there are regional differences in the fraction of positive flocks, set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. The model is set up as follows:
-=======
+
 To start investigating whether there are regional effects on the fraction of positive flocks, a plot was produced to see the fraction of positive flocks for each region (figure \ref{fig:regbox}). Here region R4 seems to stand out by having a large fraction of positive flocks compared to the others. However, in this comparison no seasonal effects are taken into account, and therefore we cannot conclude anything from this plot. We only have suspicions at this point.
->>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
 
 <<regfactor, echo=FALSE,results='hide'>>=
 names(camp)
@@ -131,11 +122,8 @@ lmr1<-lm(((posR)/totalR)~(maxTemp + relHum + precip  + sunHours + I(aveTemp^2)
                          + I(sunHours^2) + I(precip^2))^2+region,data = REGIONER)
 @
 
-<<<<<<< HEAD
-When examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it does not fulfill the requirements for a linear model. Residuals are supposed to be evenly spread, and not show any trend or pattern. 
-=======
 However, when examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it does not fulfil the requirements for a linear model. 
->>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
+
 
 <<regions, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Diagnostics plots of the model lmr1 trying to investigate regional differences in the fraction of positive flocks. Based on these plots the model is discarded, as it doesn't fulfill the requirements of a linear model.">>=
 par(mfrow=c(2,2))
@@ -143,5 +131,3 @@ plot(lmr1)
 @
 
 This leads us to the conclusion that if there are any regional differences, it cannot be shown using our model, and thus we will not comment further on it in this report. 
-
-
