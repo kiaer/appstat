@@ -25,7 +25,7 @@ camptable <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, 
 @
 
 <<initSum, results='asis', echo=FALSE>>=
-xtable(summary(camptable), caption = "Summary of the climatic variables (columns 1-5), the total # of flocks (column 6), and the # of Campylobacter positive flocks (column 7) ", label = "tab:sum")
+xtable(summary(camptable), caption = "Summary of the climatic variables (columns 1-5), the total number of flocks (column 6), and the number of Campylobacter positive flocks (column 7) ", label = "tab:sum")
 @
 
 The climatic variables shows that the average temperature in Denmark from 1998-2008 is between -5.4 and 21.0 degrees centigrade with a mean value of 8.7 degrees. In the dataset there is not a single week without observations of Campylobacter in the broiler flocks and the mean value of 34.8 infected flocks relative to the mean of 94.0 is and indication that the issue is quite serious with an average of every third flock testing positive.

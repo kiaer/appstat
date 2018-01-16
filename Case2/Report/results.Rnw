@@ -1,5 +1,8 @@
 \section{Results}
+\subsection{Result of residual analysis}
+
 \subsection{The model}
+\label{sec:model}
 As mentioned in the analysis, the first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
 
 With this the same model was fitted using two-way interactions between all climate variables. Fitting this linear model and checking the diagnostics plot, the first problem seen was in the Residuals vs Fitted plot and Residuals vs Leverages plot (See figure \ref{fig:lm1fit}).
@@ -17,12 +20,53 @@ boxcox(lm1, lambda = seq(0, 1, length.out = 20), data=camp)
 @
 The Box-Cox transformation results in a $\lambda$-value of between 0.5 and 0.75, leaving the choice for the next step of the model and the transformation of the response of \code{0.7}.
 
-For the next step, looking into further transformations of the climate variables was considered using Residual plots (Figure \ref{reslm1}) and the Tukeys test (Table \ref{tab:tukey1}). Looking at the residuals, there is a pretty even distribution, 
+For the next step, looking into further transformations of the climate variables was considered using Residual plots (Figure \ref{reslm1}) and the Tukeys test (Table \ref{tab:tukey1}). Looking at the residuals, there is a pretty even distribution, but the fitted values compared to the Pearson shows transformation is needed. From table \ref{tab:tukey1}, it is seen that several variables need an added quadratic term.
 <<reslm1, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables">>=
 xtable(residualPlots(lm1), caption = "Tukey test table. Significant variables must be looked at.", label = "tab:tukey1")
 @
+<<echo=FALSE>>=
+b1 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum   + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset = -496)
+@
+Using the residuals plot, we added quadratic terms for \code{I(aveTemp$^2$)}, \code{I(sunHours$^2$)} and \code{I(precip$^2$)} to the linear model. Table \ref{tab:tukey2} shows the model with the added quadratic terms is better. Looking at \code{I(aveTemp$^2$)}, adding a an \code{aveTemp} with a quartic term is adding to an already complex model, and seems irrelevant in this case.
+<<reslm2, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables with added quadratic terms.">>=
+xtable(residualPlots(b1, plot=FALSE), caption = "Tukey test table after adding quadratic terms.", label = "tab:tukey2")
+@
+<<echo=FALSE, results='hide'>>=
+b2 <- stepP(b1)$object
+a1 <- lm((pos / total)^0.7 ~ (maxTemp + relHum + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset= c(-496))
+a3 <- stepP(a1)$object
+@
+Looking at the diagnostics plots (See appendix \ref{sec:diag}), a stepwise reduction of the model can now be done using \code{stepP}. This results in a LM with added quadratic terms and transformation of the response value.
 
-\subsection{Regional differences}
+As a comparison we introduce a model with the same steps, but without the \code{aveTemp} included in the model and thus only keeping \code{I(aveTemp$^2$)}. The two models was compared using \code{anova} on both models (see Table \ref{tab:anovab1}, resulting in no benefit of not omitting the average temperature. 
+<<anova,echo=FALSE ,results='asis'>>=
+xtable(anova(a3,b2), caption="ANOVA of models with and without average temperature.", label = "tab:anovab1")
+@
+This was done with a variety of the variables, each resulting in keeping all of the variables due to big significane between the original and alternative model. The end result was keeping the model with two-way interactions, a subset without measurement 496, a transformation of $^0.7$ in the response and the added quadratic terms of \code{precip}, \code{aveTemp} and \code{sunHours}. The resulting summary can be seen in table \ref{tab:suma3}. Using this model also eliminates the problems seen in the residual plot and Tukey test, removing the significanse of \code{I(aveTemp$^2$)}.
+<<summaryb2, echo=FALSE, results='asis'>>=
+xtable(summary(a3), caption="Summary of the final linear model", label = "tab:sumb2", position = "H")
+@
+\subsection{Climate effects on postive flocks}
+Using the linear model found in Section \ref{sec:model}, we can now look into investigating the effects of different climate variables influence on the number of infected flocks. Predictions with the model are being done, within a 95\% confidence interval. Looking at our initial prediction of temperature having the largest influence, and given our knowledge about the correlation between the average and maximum temperature, using either in the predictions will result in the plot being relative similar. Knowing this, the focus on the inital predictors is on average temperature and sun hours, as these from Tabel \ref{tab:sumb2} has the largest increase in positive chicken flocks.  
+<<Prediction, echo=FALSE, results='hide', fig.cap="Prediction of average temperature and sun hours influence on the proportion of infections given a 95 percent confidence interval", fig.pos="H">>=
+par(mfrow=c(2,1))
+plot((pos / total) ~ aveTemp,data=camp, ylab = "Proportion of infections", xlab = "Average temperature")
+
+campy <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=-5:21)
+campyb <- lec.fun(camp,reference="sunHours",others=c("maxTemp", "relHum", "precip", "aveTemp"), ref.values=0:90)
+#pred.campy<-predict(b2, int="p",newdata=campy)
+pred.campya<- predict(a3, int="p",newdata=campy)
+#matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
+matlines(campy$aveTemp,pred.campya^(10/7),lty=c(1,2,2),col=2,lwd=2)
+
+plot((pos / total) ~ sunHours,data=camp, ylab = "Proportion of infections", xlab = "Weekly hours of sun")
+pred.campyb<- predict(a3, int="p",newdata=campyb)
+#matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
+matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
+@
+From Figure \ref{fig:Prediction} we can confirm temperature has a larger impact on the and steeper increase than sun hours according to our model.
+
+\subsection{Regional effects on positive flocks}
 In order to investigate whether there are regional differences in the fraction of positive flocks, set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. This model is set up as follows:
 
 <<regfactor, echo=FALSE,results='hide'>>=
@@ -34,19 +78,19 @@ REGIONER$totalR <-
   unlist(camp[,10 + (0:7)*2])
 REGIONER$posR <- unlist(camp[,11 + (0:7)*2])
 REGIONER$week<-as.factor(REGIONER$week)
-
 @
 <<lmr, echo=TRUE>>=
 lmr1<-lm(((posR)/totalR)~(maxTemp + relHum + precip  + sunHours + I(aveTemp^2) 
                          + I(sunHours^2) + I(precip^2))^2+region,data = REGIONER)
 @
+
 However, when examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it doesn??t fulfil the requirements for a linear model. Residuals are supposed to be evenly spread, and not show any patterns. 
-
-This leads us to the conclusion that if there are any regional differences, it cannot be shown using our model, and thus we will not comment further on it in this report. 
-
 
 <<regions, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Diagnostics plots of the model lmr1 trying to investigate regional differences in the fraction of positive flocks. Based on these plots the model is discarded, as it doesn't fulfil requirements of a linear model.">>=
 par(mfrow=c(2,2))
 plot(lmr1)
-
 @
+
+This leads us to the conclusion that if there are any regional differences, it cannot be shown using our model, and thus we will not comment further on it in this report. 
+
+

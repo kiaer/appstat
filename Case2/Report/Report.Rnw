@@ -143,7 +143,13 @@ lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], r
 @
 
 \section{Appendix}
-\subsection{Plots}
+\subsection{Diagnostic plots}
+\label{sec:diag}
+<<diagplots, fig.align='center', fig.pos="H", fig.cap="Diagnosits plot for LM with added quadratic terms">>=
+par(mfrow=c(2,2))
+plot(b1)
+@
+
 \subsection{Main script}
 <<eval=FALSE>>=
 ### Main script
