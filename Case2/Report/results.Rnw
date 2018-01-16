@@ -9,7 +9,7 @@ residualPlots(lm1test,terms=~.-aveTemp-maxTemp-relHum-sunHours-precip-Fitted.val
 
 \subsection{The model}
 \label{sec:model}
-As mentioned in the analysis, the first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
+The first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
 
 With this the same model was fitted using two-way interactions between all climate variables. Fitting this linear model and checking the diagnostics plot, the first problem seen was in the Residuals vs Fitted plot and Residuals vs Leverages plot (See figure \ref{fig:lm1fit}).
 <<lm1fit, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs Fitted and Leverages of initial two-way interaction model", fig.height=4>>=
@@ -70,10 +70,10 @@ pred.campyb<- predict(a3, int="p",newdata=campyb)
 #matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
 matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 @
-From Figure \ref{fig:Prediction} we can confirm temperature has a larger impact on the and steeper increase than sun hours according to our model.
+From Figure \ref{fig:Prediction} we can see temperature has a larger impact on the and steeper increase than sun hours according to our model.
 
-From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the infected.
-<<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours">>=
+From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the infected. 
+<<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours", fig.height=4>>=
 p.sunHours <- seq(0,100,by = 1)
 p.aveTemp <- seq(0, 22)
 par(mfrow=c(1,1))
@@ -85,16 +85,14 @@ pred <- predict(a3, newdata = pred.data, interval = "predict")
 ## Wrapping the predictions as a matrix 
 z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
 z2 <- z
-z2[z2 > 1] <- NA
-
+z2[z2 >= 1.05] <- NA
 ## First an image:
 image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
 ## Adding a contour:
 contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
 points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
-
 @
-
+Looking at Figure \ref{fig:imageplot}, the prediction shows flaws in our model, with predictions with a proportion of more than one. Still we can use it to see the general trend, sun hours and average temperature follows is interacting. It further proves the point of temperature being the main influence on infected flocks, as while sun hours has an effect, it doesn't increase the proportion of positive flocks in nearly the same manner as temperature. 
 
 \subsection{Regional effects on positive flocks}
 In order to investigate whether there are regional differences in the fraction of positive flocks, set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. This model is set up as follows:

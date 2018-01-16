@@ -154,7 +154,7 @@ pred.frame <- function(reference, data, others=names(data)[ !(names(data)%in%nam
 @
 <<Conclusion, child='conclusion.Rnw'>>=
 @
-
+\newpage
 \section{Appendix}
 \subsection{Diagnostic plots}
 \label{sec:diag}
