@@ -1,6 +1,7 @@
 \section{Case Description}
 
-The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobacter and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2008 and after merging and cleaning up the data it ends up consisting of the following:
+
+The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. In this case our data merging process ended with difference of around 1000 samples, compared to the provided data. Thus for the remainder of this assignment the statistical analysis will be done using the provided data (see Appendix \ref{sec:datamerge} for data merging script). The data is collected in the time period 1998-2008 and after merging and cleaning up the data it ends up consisting of the following:
 
 \code{year}       The year of the sampling
 
@@ -21,11 +22,16 @@ The data used in this case is collected from several data sets. In order to merg
 \code{pos}        Total number of flocks tested positive for Campylobacter per week
 
 <<echo=FALSE>>=
-camptable <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, camp$precip, camp$total, camp$pos)
+camptable_climate <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, camp$precip)
+camptable_ind <- data.frame(camp$total, camp$pos)
 @
 
 <<initSum, results='asis', echo=FALSE>>=
-xtable(summary(camptable), caption = "Summary of the climatic variables (columns 1-5), the total number of flocks (column 6), and the number of Campylobacter positive flocks (column 7) ", label = "tab:sum")
+xtable(summary(camptable_climate), caption = "Summary of the climatic variables", label = "tab:sum", position="centering")
+@
+
+<<initSum1, results='asis', echo=FALSE>>=
+xtable(summary(camptable_ind), caption = "The total number of flocks  and the number of Campylobacter positive flocks", label = "tab:sum1", position="centering")
 @
 
 The climatic variables shows that the average temperature in Denmark from 1998-2008 is between -5.4 and 21.0 degrees centigrade with a mean value of 8.7 degrees. In the dataset there is not a single week without observations of Campylobacter in the broiler flocks and the mean value of 34.8 infected flocks relative to the mean of total flocks 94.0 is and indication that the issue is quite serious.

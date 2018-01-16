@@ -1,11 +1,10 @@
 \section{Results}
 \subsection{Result of residual analysis}
-In order to investigate wether the residuals of our modelare independent of parameters we include, or not, we start by making a linear model to describe the fraction of positive flocks as a function of all climate variables and the week of the year. When examining the residuals plotted against all climate variables, the residuals are evenly spread, and no patterns are to find and the residuals are therefore considered to be independent of these variables. However, when it comes to the residuals plotted against week number there is a pattern forming, weakly following the seasonal fluctuations with mostly positive residuals in the summer period (figure \ref{fig:weekres}). This means that the residuals are not independent of the week number, and therefore week number is left out of our model.
+In order to investigate wether the residuals of our model are independent of parameters we include, we start by making a linear model to describe the fraction of positive flocks as a function of all climate variables and the week of the year. When examining the residuals plotted against all climate variables, the residuals are evenly spread, and no patterns are to find and the residuals are therefore considered to be independent of these variables. However, when it comes to the residuals plotted against week number there is a pattern forming, weaaly following the seasonal fluctuations with mostly positive residuals in the summer period (figure \ref{fig:weekres}). This means that the residuals are not independent of the week number, and therefore week number is left out of our model. This dependence of the residuals makes the fitted values as a function of the residuals non-linear, making the linear model unfit for doing statistical analysis (see Appendix \ref{sec:residual} for final residual plot with linearity).
 <<weekres, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs week number and fitted values in a basic model describing the fraction of positive flocks as a function of all climate variables and the week of the year. Residuals are proven to not be independent of week number, and this is therefore left out of our final model. ", fig.height=4>>=
 lm1test <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week )^2, data=camp)
 residualPlots(lm1test,terms=~.-aveTemp-maxTemp-relHum-sunHours-precip-Fitted.values)
 @
-
 
 \subsection{The model}
 \label{sec:model}
@@ -26,7 +25,9 @@ boxcox(lm1, lambda = seq(0, 1, length.out = 20), data=camp)
 @
 The Box-Cox transformation results in a $\lambda$-value of between 0.5 and 0.75, leaving the choice for the next step of the model and the transformation of the response of \code{0.7}.
 
-For the next step, looking into further transformations of the climate variables was considered using Residual plots (Figure \ref{reslm1}) and the Tukeys test (Table \ref{tab:tukey1}). Looking at the residuals, there is a pretty even distribution, but the fitted values compared to the Pearson shows that transformation is needed. From table \ref{tab:tukey1}, it is seen that several variables need an added quadratic term.
+
+For the next step, looking into further transformations of the climate variables was considered using Residual plots (Figure \ref{fig:reslm1}) and the Tukeys test (Table \ref{tab:tukey1}). Looking at the residuals, there is a pretty even distribution, but the fitted values compared to the Pearson shows transformation is needed. From table \ref{tab:tukey1}, it is seen that several variables need an added quadratic term.
+
 <<reslm1, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables">>=
 xtable(residualPlots(lm1), caption = "Tukey test table. Significant variables must be looked at.", label = "tab:tukey1")
 @

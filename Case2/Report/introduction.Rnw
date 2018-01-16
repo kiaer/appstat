@@ -12,7 +12,7 @@ To initiate the analysis we will attempt to answer the following questions:
 
 After a brief overview of the data we will transform some of the variables to allow for the simplest possible statistical model in concordance with the parsimony principle. We will then interpret the results of the model and expand the analyse accordingly.
 
-<<initbox, echo=FALSE, fig.height=3, fig.pos="H", fig.cap="Boxplot showing the fraction of infected broiler flocks in each week from 1998-2008">>=
+<<initbox, echo=FALSE, fig.height=4, fig.pos="H", fig.cap="Boxplot showing the fraction of infected broiler flocks in each week from 1998-2008">>=
 par(mfrow=c(1,1))
 boxplot(pos/total ~ week, camp,  xlab="Week number", ylab="Proportion of Camp. pos. flocks")
 @

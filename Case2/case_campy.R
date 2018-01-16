@@ -74,6 +74,7 @@ a3 <- stepP(a1)$object
 drop1(a3, test="F")
 anova(a3)
 summary(a3)
+residualPlots(a3)
 plot(a3)
 
 b1 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset = -496)
