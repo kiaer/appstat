@@ -71,9 +71,6 @@ Kristian \textsc{Maar}: s172956
 \newpage
 \section*{Summary}
 
-Campylobacter bacteria is currently the leading cause of enteric infections in Denmark and the primary source of exposure and risk of infection is through handling or ingesting contaminated poultry products. Sampling from broiler flocks before slaughtering revealed a seasonal pattern in the proportional occurence of Campylobacter. This report attempts to investigate climate data from the Danish Meteorology Institute to determine possible correlations between climate variables e.g. temperature and the proportion of infected flocks. After data transformation we apply a linear reggression model and find strong correlation between average- and maximum temperature and Campylobacter positive flocks. Further analysis of possible trends not explained by climate data as well as regional variation is performed but yields no determinate results.
-
-
 \newpage
 \tableofcontents
 \newpage
