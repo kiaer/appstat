@@ -1,15 +1,4 @@
 \section{Analysis}
-Dette er nok mest til data afsnittet....
-
-Some initial comments to the raw data can be made just from inspecting plots of different variables. As the aim of this report is to investigate how different climatic variables are affecting the strong seasonality in the amount of campylobacter positive flocks.
-
-When considering the seasonality, and which climate variables that might cause this, some seem more relevant than others.At first glance there seem to be some sort of effect of both average temperature, maximum temperature and sun hours, as they have almost the same seasonal variation as the positive flocks. They do not seem to be directly correlated, as there seem to be a delayed effect in the number of positive flocks from a rise in temperature for example. This could indicate a delayed effect, but they peak at roughly the same time, so possibly a quadratic correlation could be the case here. The fact that almost he same pattern is seen for sun hours and both temperature measurements tells us that there might be some correlation between these variables. This does not come as a surprise, as this is a truly logical correlation. This will also have the implication that the residuals for these variables in a model containing all of these parameters will not be independent. 
-
-Another of these correlated variables are the relative humidity, which seems to be weakly negatively proportional to the seasonality pattern. This is neither a surprise as warm air has a greater capacity for containing water vapor, and cold air is therefore more easily saturated. These residuals will not be independent either.
-
-The last climatic variable to consider is preicipitation. There is no clear seasonal pattern at initial visual interpretation, but investigating correlation it is weakly correlated to relative humidity, and weakly negatively correlated to sun hours. This means that even precipitation, which at a first glance looked independent of the other variables, is indeed not. This means that neither will its residuals be in a statistical model.  (skulle man m??ske have en tabel med correlationer med?)
-
-her begynder analysis afsnittet
 
 The purpose of the statistical analysis is to create a model that describes the data in simplest and most accurate way possible. The preferred type of model is the linear model, as this is the simplest possible, and in this case it seems suitable. When setting up and optimizing the model some steps are to be followed.
 

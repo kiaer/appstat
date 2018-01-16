@@ -1,6 +1,6 @@
 \section{Case Description}
 
-The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2007 and after merging and cleaning up the data it ends up consisting of the following:
+The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2008 and after merging and cleaning up the data it ends up consisting of the following:
 
 \code{year}       The year of the sampling
 
@@ -28,8 +28,8 @@ camptable <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, 
 xtable(summary(camptable), caption = "Summary of the climatic variables (1-5) and the proportion of Campylobacter positive flocks (6)  ", label = "tab:sum")
 @
 
-??? The climatic variables shows that the average temperature in Denmark from 1998-2008 is between -5.4 and 21.0 degrees centigrade with a mean value of 8.7 degrees. In the dataset there is not a single week without observations of Campylobacter in the broiler flocks and the mean value of 34.8 infected flocks relative to the mean of 94.0 is and indication that the issue is quite serious with an average of every third flock testing positive. ???
-From the data it is obvious that the climatic variables seem to cycle once per year and that the sunlight hours and temperature peaks in the summer and dip during the winter. The relative humidity has a cycle of the same period but reversed with the lowest relative humidity in the summer and highest in the winter. It should be noted that the values of relative humidity are proportional to the amount of water that can evaporate into atmospheric air before it is saturated. As the water capacity of the air is temperature dependent it is able to contain more water at higher temperatures and is therefore more easily saturated in the winter. There is no obvious trend from an initial interpretation of the precipitation data as seen ((table XX)). 
+The climatic variables shows that the average temperature in Denmark from 1998-2008 is between -5.4 and 21.0 degrees centigrade with a mean value of 8.7 degrees. In the dataset there is not a single week without observations of Campylobacter in the broiler flocks and the mean value of 34.8 infected flocks relative to the mean of 94.0 is and indication that the issue is quite serious with an average of every third flock testing positive.
+From the data it is obvious that the climatic variables seem to cycle once per year and that the sunlight hours and temperature peaks in the summer and dip during the winter. The relative humidity has a cycle of the same period but reversed with the lowest relative humidity in the summer and highest in the winter. ((table XX)). 
 
 <<>>=
 par(mfrow=c(2,3))
@@ -43,9 +43,12 @@ plot(camp$week, camp$precip, xlab="Week number", ylab="Precipitation")
 plot(camp$week, camp$pos/camp$total, xlab="Week number", ylab="Proportion of Camp. pos. flocks")
 @
 
-When the proportional number of Campylobacter positive flocks of broilers from 1998-2007 is plotted against the weeks of the year there seems to be a strong seasonality in the occurrences of infected broilers. The seasonality corresponds to the climatic variables of temperature and sunlight hours as an initial observation, and the highest proportion of infected broilers are observed in the summer months with fewer infected flocks during the winter.  
+When the proportional number of Campylobacter positive flocks of broilers from 1998-2007 is plotted against the weeks of the year there seems to be a strong seasonality in the occurrences of infected broilers. The seasonality corresponds to the climatic variables of temperature and sunlight hours as an initial observation, and the highest proportion of infected broilers are observed in the summer months with fewer infected flocks during the winter ((See table)) 
 
-<<boxplotInit, echo=FALSE, fig.height=3, fig.pos="H", fig.cap="Boxplot showing the fraction of infected broiler flocks in each week for all years">>=
-boxplot(pos/total ~ week, camp,  xlab="Week number", ylab="Fraction of Camp. pos. flocks")
+When considering the seasonality, and which climate variables that might cause this effect, some seem more relevant than others.At first glance there seem to be some sort of effect of both average temperature, maximum temperature and sun hours, as they have almost the same seasonal variation as the positive flocks. They do not seem to be directly correlated, as there seem to be a delayed effect in the number of positive flocks from a rise in temperature for example. This could indicate a delayed effect, but they peak at roughly the same time, so possibly a quadratic correlation could be the case here. The fact that a similar pattern is observed for sun hours and both temperature measurements is suggestive of some correlation between these variables. This is hardly surprising, as it is a logical correlation as the temperature must to a large extend be considered a direct effect of the suns radiation. This will also have the implication that the residuals for these variables in a model containing all of these parameters will not be independent. 
 
-@
+Another of these correlated variables are the relative humidity, which seems to be weakly negatively proportional to the seasonality pattern. This is not a surprise as warm air has a greater capacity for containing water vapor, and cold air is therefore more easily saturated.
+
+The last climatic variable to consider is preicipitation. There is no clear seasonal pattern at initial visual interpretation, but investigating correlation it is weakly correlated to relative humidity, and weakly negatively correlated to sun hours. This means that even precipitation, which at a first glance looks independent of the other variables, is indeed not. ((See table))
+
+
