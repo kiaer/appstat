@@ -70,6 +70,7 @@ Kristian \textsc{Maar}: s172956
 \end{titlepage}
 \newpage
 \section*{Summary}
+Campylobacter bacteria is currently the leading cause of enteric infections in Denmark and the primary source of exposure and risk of infection is through handling or ingesting contaminated poultry products. Sampling from broiler flocks before slaughtering revealed a seasonal pattern in the proportional occurence of Campylobacter. This report attempts to investigate climate data from the Danish Meteorology Institute to determine possible correlations between climate variables e.g. temperature and the proportion of infected flocks. After data transformation we apply a linear reggression model and find strong correlation between average- and maximum temperature and Campylobacter positive flocks. Further analysis of possible trends not explained by climate data as well as regional variation is performed but yields no determinate results.
 
 \newpage
 \tableofcontents
@@ -124,6 +125,21 @@ lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], r
   }
   return(pdata)
 }
+pred.frame <- function(reference, data, others=names(data)[ !(names(data)%in%names(reference)) ]){
+  if (class(reference) == "list"){  ## Need to run expand.grid( <list>)
+    pdata <- expand.grid(reference)
+  } else {
+    pdata <- reference
+  }
+  ref.model <- names(reference)
+  if(length(names(reference))>1)
+    ref.model <- paste(ref.model, sep="+")
+  for(i in others){
+    lmtmp<-lm(as.formula(paste(i,"~",ref.model)),data)
+    pdata[[i]]<-predict(lmtmp,newdata=pdata)
+  }
+  return(pdata)
+}
 
 @
 <<Introduction, child='introduction.Rnw'>>=
@@ -140,7 +156,13 @@ lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], r
 @
 
 \section{Appendix}
-\subsection{Plots}
+\subsection{Diagnostic plots}
+\label{sec:diag}
+<<diagplots, fig.align='center', fig.pos="H", fig.cap="Diagnosits plot for LM with added quadratic terms">>=
+par(mfrow=c(2,2))
+plot(b1)
+@
+
 \subsection{Main script}
 <<eval=FALSE>>=
 ### Main script

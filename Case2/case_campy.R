@@ -5,7 +5,7 @@ library(MASS)
 library(car)
 library(lattice)
 #camp <- data.frame(weekly, climate)
-
+sum(camp$total)
 summary(camp)
 #plot(camp, panel=panel.smooth)
 boxplot(pos/total ~ week, camp)
@@ -13,10 +13,9 @@ boxplot(pos/total ~ week, camp)
 plot(camp$week, camp$aveTemp)
 plot(camp$week, camp$pos/camp$total)
 
-lm1 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip )^2, data=camp, subset = -496)
-par(mfrow=c(2,1))
-plot(lm1, which=1)
-plot(lm1, which=5)
+lm1 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip )^2, data=camp)
+par(mfrow=c(2,2))
+plot(lm1)
 
 residualPlots(lm1)
 summary(lm1)
@@ -60,11 +59,11 @@ stepP <- function(object, level=0.05, verbose=FALSE){
 mod <- stepP(lm2)
 lm3 <- mod$object
 
-par(mfrow=c(2,2))
-plot(lm12)
-residualPlots(lm12)
+# par(mfrow=c(2,2))
+# plot(lm12)
+# residualPlots(lm12)
 
-a1 <- lm((pos / total)^0.7 ~ (maxTemp + relHum + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset= c(-496))
+a1 <- lm((pos / total)^0.7 ~ (maxTemp + relHum  + precip + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset= c(-496))
 par(mfrow=c(2,2))
 plot (a1)
 summary(a1)
@@ -77,14 +76,15 @@ anova(a3)
 summary(a3)
 plot(a3)
 
-b1 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum   + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset = -496)
+b1 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum + precip  + sunHours + I(aveTemp^2) + I(sunHours^2) + I(precip^2))^2, data=camp, subset = -496)
 par(mfrow=c(2,2))
 plot(b1)
 b2 <- stepP(b1)$object
 summary(b2)
+anova(a3)
 
 anova(a3,b2)
-
+sum(camp$total)
 
 lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], ref.values=seq(min(data[[reference]]),max(data[[reference]]),length=30)){
   pdata<-data.frame(reference=ref.values)
@@ -113,18 +113,24 @@ pred.frame <- function(reference, data, others=names(data)[ !(names(data)%in%nam
 }
 
 par(mfrow=c(1,1))
-plot((pos / total) ~ aveTemp,data=camp)
+plot((pos / total) ~ maxTemp,data=camp, ylab = "Proportion of infections", xlab = "Average temperature")
 
-campy <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=-5:21)
-campyb <- lec.fun(camp,reference="aveTemp",others=c("maxTemp", "relHum", "precip", "sunHours"), ref.values=-5:21)
+campy <- lec.fun(camp,reference="maxTemp",others=c("aveTemp", "relHum", "precip", "sunHours"), ref.values=0:30)
+campyb <- lec.fun(camp,reference="sunHours",others=c("maxTemp", "relHum", "precip", "aveTemp"), ref.values=0:90)
 
-pred.campy<-predict(b2, int="p",newdata=campy)
+#pred.campy<-predict(b2, int="p",newdata=campy)
 pred.campya<- predict(a3, int="p",newdata=campy)
-matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
-matlines(campy$aveTemp,pred.campya^(10/7),lty=c(1,2,2),col=2,lwd=2)
+#matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
+matlines(campy$maxTemp,pred.campya^(10/7),lty=c(1,2,2),col=2,lwd=2)
 
-p.sunHours <- seq(0,90,by = 3)
-p.aveTemp <- seq(0, 30)
+plot((pos / total) ~ sunHours,data=camp, ylab = "Proportion of infections", xlab = "Weekly hours of sun")
+pred.campyb<- predict(a3, int="p",newdata=campyb)
+#matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
+matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
+
+
+p.sunHours <- seq(0,100,by = 1)
+p.aveTemp <- seq(0, 22)
 par(mfrow=c(1,1))
 
 ## Creating prediction data.frame and then predicting
@@ -132,43 +138,20 @@ pred.data <- pred.frame(reference = list(sunHours=p.sunHours, aveTemp=p.aveTemp)
 pred <- predict(a3, newdata = pred.data, interval = "predict")
 
 ## Wrapping the predictions as a matrix 
-z <- matrix(pred[,"fit"]^(10/7), nrow=length(p.sunHours))
+z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
+z2 <- z
+z2[z2 > 1] <- NA
 
 ## First an image:
-image(p.sunHours, p.aveTemp, z, xlab = "sunHours", ylab = "Precipitation")
+image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
 ## Adding a contour:
-contour(p.sunHours, p.aveTemp, z, add=TRUE, labcex = 1.5)
+contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
 points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
+z2 <- z
+z2[z2 > 1] <- NA
+## First an image:
+image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Precipitation")
+## Adding a contour:
+contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
+points(aveTemp ~ sunHours, data= camp, cex=0.5) # 
 
-
-# a2 <- step(a1)
-# a3 <- stepP(a2)$object
-# anova(a3)
-# drop1(a3, test="F")
-# a4 <- update(a3, .~. -relHum)
-# drop1(a4, test="F")
-# anova(a4)
-# a5 <- stepP(a4)$object
-# anova(a5)
-# a6 <- update(a5, .~. -sunHours)
-# drop1(a6, test="F")
-# anova(a6)
-# a7 <- update(a6, .~. -aveTemp:precip)
-# drop1(a7, test="F")
-# a8 <- stepP(a7)$object
-# anova(a8)
-
-# residualPlots(a8)
-# plot(a8)
-# drop1(a8, test="F")
-# summary(a8)
-# coef(a8)
-# 
-# t4 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week + I(aveTemp^2))^3, data=facit)
-# par(mfrow=c(2,2))
-# plot(t3)
-# boxcox(a3, lambda = seq(0, 1, length.out = 20))
-# 
-# t4 <- lm((pos / total)^0.7 ~ (aveTemp + maxTemp + relHum + sunHours + precip + week + I(aveTemp^2))^3, data=facit)
-# par(mfrow=c(2,2))
-# plot(t4)
