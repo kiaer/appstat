@@ -66,6 +66,30 @@ matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 @
 From Figure \ref{fig:Prediction} we can confirm temperature has a larger impact on the and steeper increase than sun hours according to our model.
 
+From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the infected.
+<<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours">>=
+p.sunHours <- seq(0,100,by = 1)
+p.aveTemp <- seq(0, 22)
+par(mfrow=c(1,1))
+
+## Creating prediction data.frame and then predicting
+pred.data <- pred.frame(reference = list(sunHours=p.sunHours, aveTemp=p.aveTemp), data = camp, others = c("maxTemp", "relHum", "precip"))
+pred <- predict(a3, newdata = pred.data, interval = "predict")
+
+## Wrapping the predictions as a matrix 
+z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
+z2 <- z
+z2[z2 > 1] <- NA
+
+## First an image:
+image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
+## Adding a contour:
+contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
+points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
+
+@
+
+
 \subsection{Regional effects on positive flocks}
 In order to investigate whether there are regional differences in the fraction of positive flocks, set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. This model is set up as follows:
 

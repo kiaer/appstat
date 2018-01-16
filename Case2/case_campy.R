@@ -4,7 +4,7 @@ camp = read.table("case2regions4.txt", header=T, sep = "\t")
 library(MASS)
 library(car)
 library(lattice)
-camp <- data.frame(weekly, climate)
+#camp <- data.frame(weekly, climate)
 sum(camp$total)
 summary(camp)
 #plot(camp, panel=panel.smooth)
@@ -13,10 +13,9 @@ boxplot(pos/total ~ week, camp)
 plot(camp$week, camp$aveTemp)
 plot(camp$week, camp$pos/camp$total)
 
-lm1 <- lm((Positive / Total) ~ (aveTemp + maxTemp + relHum + sunHours + precip )^2, data=camp, subset = -496)
-par(mfrow=c(2,1))
-plot(lm1, which=1)
-plot(lm1, which=5)
+lm1 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip )^2, data=camp)
+par(mfrow=c(2,2))
+plot(lm1)
 
 residualPlots(lm1)
 summary(lm1)
@@ -130,7 +129,7 @@ pred.campyb<- predict(a3, int="p",newdata=campyb)
 matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 
 
-p.sunHours <- seq(0,100,by = 3)
+p.sunHours <- seq(0,100,by = 1)
 p.aveTemp <- seq(0, 22)
 par(mfrow=c(1,1))
 
@@ -140,10 +139,19 @@ pred <- predict(a3, newdata = pred.data, interval = "predict")
 
 ## Wrapping the predictions as a matrix 
 z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
+z2 <- z
+z2[z2 > 1] <- NA
 
 ## First an image:
-image(p.sunHours, p.aveTemp, z, xlab = "sunHours", ylab = "Average Temperature")
+image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
 ## Adding a contour:
-contour(p.sunHours, p.aveTemp, z, add=TRUE, labcex = 1.5)
+contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
 points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
+z2 <- z
+z2[z2 > 1] <- NA
+## First an image:
+image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Precipitation")
+## Adding a contour:
+contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
+points(aveTemp ~ sunHours, data= camp, cex=0.5) # 
 

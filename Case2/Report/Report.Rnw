@@ -127,6 +127,21 @@ lec.fun<-function(data, reference, others=names(data)[names(data)!=reference], r
   }
   return(pdata)
 }
+pred.frame <- function(reference, data, others=names(data)[ !(names(data)%in%names(reference)) ]){
+  if (class(reference) == "list"){  ## Need to run expand.grid( <list>)
+    pdata <- expand.grid(reference)
+  } else {
+    pdata <- reference
+  }
+  ref.model <- names(reference)
+  if(length(names(reference))>1)
+    ref.model <- paste(ref.model, sep="+")
+  for(i in others){
+    lmtmp<-lm(as.formula(paste(i,"~",ref.model)),data)
+    pdata[[i]]<-predict(lmtmp,newdata=pdata)
+  }
+  return(pdata)
+}
 
 @
 <<Introduction, child='introduction.Rnw'>>=
