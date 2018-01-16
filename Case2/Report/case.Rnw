@@ -25,15 +25,14 @@ camptable <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, 
 @
 
 <<initSum, results='asis', echo=FALSE>>=
-xtable(summary(camptable), caption = "Summary of the climatic variables (1-5) and the proportion of Campylobacter positive flocks (6)  ", label = "tab:sum")
+xtable(summary(camptable), caption = "Summary of the climatic variables (columns 1-5), the total # of flocks (column 6), and the # of Campylobacter positive flocks (column 7) ", label = "tab:sum")
 @
 
 The climatic variables shows that the average temperature in Denmark from 1998-2008 is between -5.4 and 21.0 degrees centigrade with a mean value of 8.7 degrees. In the dataset there is not a single week without observations of Campylobacter in the broiler flocks and the mean value of 34.8 infected flocks relative to the mean of 94.0 is and indication that the issue is quite serious with an average of every third flock testing positive.
 From the data it is obvious that the climatic variables seem to cycle once per year and that the sunlight hours and temperature peaks in the summer and dip during the winter. The relative humidity has a cycle of the same period but reversed with the lowest relative humidity in the summer and highest in the winter. ((table XX)). 
 
-<<>>=
+<<plotcase, echo=FALSE, fig.pos="H",  fig.cap="The climatic variables through the year (plots 1-5) and the proportion of Campylobacter positive flocks (plot 6)">>=
 par(mfrow=c(2,3))
-
 plot(camp$week, camp$aveTemp, xlab="Week number", ylab="Average temperature")
 plot(camp$week, camp$maxTemp, xlab="Week number", ylab="Maximum temperature")
 plot(camp$week, camp$relHum, xlab="Week number", ylab="Relative humidity")
