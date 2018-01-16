@@ -1,19 +1,26 @@
 \section{Discussion}
 
-The causal effects of the seasonality on Campylobacter occurrence remains speculative in this report as there are biological variables not ireflected by the data. One very interresting possibility is that the ambient temperature has a direct positiveeffect on the growth rate of the bacteria and thus the severity and virulence of an outbreak. 
+The causal effects of the seasonality on Campylobacter occurrence remains speculative in this report as there are biological variables not reflected by the data. One very interesting possibility is that the ambient temperature has a direct positive effect on the growth rate of the bacteria and thus the severity and virulence of an outbreak. 
 
-This effect could be explained by two different functional responses.
-
-1 - Temperature dependant growth. The growth rate and thereby survivability and proliferation of Campylobacter is assumed to be directly correlated to the ambient temperature and that a rise in temperature would equal a certain rise in number of bacteria in a given environment. As the growth rate of bacteria by cell division is exponential by definition there would be an opportunity for a rapid increase in population once the environmental conditions is adequate. 
-
-2 - Transmission. Where the effect of higher temperatures on the occurrence of Campylobacter is the assumed improvement in survivability during transmission. As the average survival time of the bacteria exposed to the environment outside of a host organism must logically be shorter in cold conditions than in conditions closer to the preferred temperature of Campylobacter, the potential virulence could improve at higher temperatures because the bacteria are able to remain functional and infectious during transmission. E.g. during the transfer of contaminated equipment, on clothing or products. 
+The growth rate and thereby survivability and proliferation of Campylobacter is assumed to be directly correlated to the ambient temperature and that a rise in temperature would equal a certain rise in number of bacteria in a given environment. As the growth rate of bacteria by cell division is exponential by definition there would be an opportunity for a rapid increase in population once the environmental conditions are adequate. 
 
 Relative humidity could logically have a similar effect as temperature as dryer conditions are generally assumed to be more hostile towards bacteria than a more humid environment where the loss of water to the surroundings is assumed to be slower.  
 
 To investigate these effects further, data on the specific biology of Campylobacter under different evironmental conditions is needed and therefore the arguments above remain speculative.
 
+<<>>=
 plot(as.factor(camp$year),(camp$pos/camp$total))
 
-The proportion of infected flocks seems to be declining in the danish poultry industry, however the number of infected humans has been rising during the past 15 years from 2000 individuals per year to leveling off at an icreased 4000 per year (Patienthåndbogen). We have no data to enforce any speculations in the correlation between Campylobacter in the poultry industry and infected humans, and it would be necessary to investigate other possible infection vectors such as contaminated drinking water and human transmission to say anything about this.
+#camptotalyear<- aggregate(camp$total, by=list(year=camp$year), FUN=sum)
+#camptotalyear
+#barplot(as.factor(camptotalyear$year , camptotalyear$x))
+@
 
-Climate change???
+The proportion of infected flocks seems to be declining in the danish poultry industry, however the number of infected humans has been rising during the past 15 years from 2000 individuals per year to leveling off at an icreased 4000 per year (Patienthåndbogen). We have no data to enforce any speculations in the correlation between Campylobacter in the poultry industry and infected humans, and it would be necessary to investigate other possible infection vectors such as contaminated drinking water and human transmission to say anything about the effect on the number of infected humans.
+
+The dataset does not distinguish between broiler origin facilities based on production method. As poultry producers maintain their broiler population under different conditions e.g. free ranging or indoors, there would presumeably a significant difference in the actual climate conditions experienced by the broilers during their lifespan. A free ranging broiler population would likely be exposed to varying environmental conditions due to weather and season and potentially to sources of Campylobacter in the soil or from transmission by e.g. other birds. Indoor populations may be more isolated and experience much more stable environmental conditions which could limit the potential for introducing Campylobacter and but adversely the very densely stocked and crowded pens would likely enable a faster spread of the bacteria. 
+As there is no data on this we can only speculate about these variables but if the controlling of climate conditions such as temperature and humidity is to be managed in an effort to prevent the spread of Campylobacter, these conditions should be determined for future analysis.
+
+The climate data provided in the dataset is on national level and does not include any regional variation. Though Denmark is small in area and extent and no dramatic variation in climate is expected, regional variation in climate conditions could strengthen the correlation and focus the implementation of mitigation strategies.
+
+For future studies it would be beneficial to accumulate data from comparable facilities but in different climate zones and different countries to strengthen the hypothesis of temperature dependence of Campylobacter occurrence. Presumeably poultry producers in tropical and subtropical areas would observe less seasonal variation than the temperate area but higher average occurrence and arctic areas would also observe less seasonality but lower average occurrence. 

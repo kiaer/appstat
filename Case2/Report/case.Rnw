@@ -37,7 +37,8 @@ plot(camp$week, camp$aveTemp, xlab="Week number", ylab="Average temperature")
 plot(camp$week, camp$maxTemp, xlab="Week number", ylab="Maximum temperature")
 plot(camp$week, camp$relHum, xlab="Week number", ylab="Relative humidity")
 plot(camp$week, camp$sunHours, xlab="Week number", ylab="Sunlight hours")
-plot(camp$week, camp$precip, xlab="Week number", ylab="Precipitation")
+plot(camp$week, camp$precip, xlab="Week number", ylab="Precipitation"
+     )
 
 plot(camp$week, camp$pos/camp$total, xlab="Week number", ylab="Proportion of Camp. pos. flocks")
 @
