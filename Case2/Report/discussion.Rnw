@@ -8,7 +8,7 @@ Relative humidity could logically have a similar effect as temperature as dryer 
 
 To investigate these effects further, data on the specific biology of Campylobacter under different evironmental conditions is needed and therefore the arguments above remain speculative.
 
-<<>>=
+<<plotyear, echo=FALSE, fig.cap= "The proportion of Campylobacter positive flocks for each of the sampled years. Note that only a few observations are taken in 2008 and this year is therefore not comparable to the rest">>=
 plot(as.factor(camp$year),(camp$pos/camp$total))
 
 #camptotalyear<- aggregate(camp$total, by=list(year=camp$year), FUN=sum)
@@ -16,7 +16,7 @@ plot(as.factor(camp$year),(camp$pos/camp$total))
 #barplot(as.factor(camptotalyear$year , camptotalyear$x))
 @
 
-The proportion of infected flocks seems to be declining in the danish poultry industry, however the number of infected humans has been rising during the past 15 years from 2000 individuals per year to leveling off at an icreased 4000 per year (Patienthåndbogen). We have no data to enforce any speculations in the correlation between Campylobacter in the poultry industry and infected humans, and it would be necessary to investigate other possible infection vectors such as contaminated drinking water and human transmission to say anything about the effect on the number of infected humans.
+The proportion of infected flocks seems to be declining slightly in the sampled flocks, however the number of infected humans has been rising during the past 15 years from 2000 individuals per year to leveling off at an icreased 4000 per year (Patienthåndbogen). We have no data to enforce any speculations in the correlation between Campylobacter in the poultry industry and infected humans, and it would be necessary to investigate other possible infection vectors such as contaminated drinking water and human transmission to say anything about the effect on the number of infected humans.
 
 The dataset does not distinguish between broiler origin facilities based on production method. As poultry producers maintain their broiler population under different conditions e.g. free ranging or indoors, there would presumeably a significant difference in the actual climate conditions experienced by the broilers during their lifespan. A free ranging broiler population would likely be exposed to varying environmental conditions due to weather and season and potentially to sources of Campylobacter in the soil or from transmission by e.g. other birds. Indoor populations may be more isolated and experience much more stable environmental conditions which could limit the potential for introducing Campylobacter and but adversely the very densely stocked and crowded pens would likely enable a faster spread of the bacteria. 
 As there is no data on this we can only speculate about these variables but if the controlling of climate conditions such as temperature and humidity is to be managed in an effort to prevent the spread of Campylobacter, these conditions should be determined for future analysis.
