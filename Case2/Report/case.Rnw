@@ -1,6 +1,6 @@
 \section{Case Description}
 
-The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2008 and after merging and cleaning up the data it ends up consisting of the following:
+The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2007 and after merging and cleaning up the data it ends up consisting of the following:
 
 \code{year}:      The year of the sampling
 
@@ -43,7 +43,7 @@ plot(camp$week, camp$precip, xlab="Week number", ylab="Precipitation")
 plot(camp$week, camp$pos/camp$total, xlab="Week number", ylab="Proportion of Camp. pos. flocks")
 @
 
-When the proportional number of Campylobacter positive flocks of broilers from 1998-2008 is plotted against the weeks of the year there seems to be a strong seasonality in the occurrences of infected broilers. The seasonality corresponds to the climatic variables of temperature and sunlight hours as an initial observation, and the highest proportion of infected broilers are observed in the summer months with fewer infected flocks during the winter.  
+When the proportional number of Campylobacter positive flocks of broilers from 1998-2007 is plotted against the weeks of the year there seems to be a strong seasonality in the occurrences of infected broilers. The seasonality corresponds to the climatic variables of temperature and sunlight hours as an initial observation, and the highest proportion of infected broilers are observed in the summer months with fewer infected flocks during the winter.  
 
 <<boxplotInit, echo=FALSE, fig.height=3, fig.pos="H", fig.cap="Boxplot showing the fraction of infected broiler flocks in each week for all years">>=
 boxplot(pos/total ~ week, camp,  xlab="Week number", ylab="Fraction of Camp. pos. flocks")
