@@ -2,15 +2,15 @@
 
 The data used in this case is collected from several data sets. In order to merge the data into one set, a cleaning process needs to be carried out. The cleaning process involves deleting duplicates of specific measurements, removing records containing errors, unify nomenclature and filter out data that are irrelevant for this specific case. The sample data is also merged with climate data, in order to look further into possible connections between cases of Campylobater and different climatic variables. The climate data is provided by the Danish Meteorological Institute. The data is collected in the time period 1998-2007 and after merging and cleaning up the data it ends up consisting of the following:
 
-\code{year}:      The year of the sampling
+\code{year}       The year of the sampling
 
-\code{week}:      The week of the year 
+\code{week}       The week of the year 
 
 \code{aveTemp}    Average temperature per week $[^\circ C]$
 
 \code{maxTemp}    Maximum temperature per week $[^\circ C]$
 
-\code{relHum}     Avarage weekly relative humidity [\%]
+\code{relHum}     Avarage weekly relative humidity $[\%]$
 
 \code{sunHours}   Hours of sunshine per week [h]
 
@@ -20,8 +20,8 @@ The data used in this case is collected from several data sets. In order to merg
 
 \code{pos}        Total number of flocks tested positive for Campylobacter per week
 
-<<CaseDescription, child='case.Rnw'>>=
-camptable<- (data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, camp$precip, camp$total, camp$pos))
+<<echo=FALSE>>=
+camptable <- data.frame(camp$aveTemp, camp$maxTemp, camp$relHum, camp$sunHours, camp$precip, camp$total, camp$pos)
 @
 
 <<initSum, results='asis', echo=FALSE>>=
@@ -49,8 +49,3 @@ When the proportional number of Campylobacter positive flocks of broilers from 1
 boxplot(pos/total ~ week, camp,  xlab="Week number", ylab="Fraction of Camp. pos. flocks")
 
 @
-
-
-<<CaseDescription, child='case.Rnw'>>=
-
-

@@ -17,8 +17,8 @@ boxcox(lm1, lambda = seq(0, 1, length.out = 20), data=camp)
 @
 The Box-Cox transformation results in a $\lambda$-value of between 0.5 and 0.75, leaving the choice for the next step of the model and the transformation of the response of \code{0.7}.
 
-For the next step, looking into further transformations of the climate variables was considered using Residual plots and the Tukeys test.
-<<reslm1, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables", fig.height=3>>=
-xtable(residualPlots(lm1, which=6))
+For the next step, looking into further transformations of the climate variables was considered using Residual plots (Figure \ref{reslm1}) and the Tukeys test (Table \ref{tab:tukey1}). Looking at the residuals, there is a pretty even distribution, 
+<<reslm1, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables">>=
+xtable(residualPlots(lm1), caption = "Tukey test table. Significant variables must be looked at.", label = "tab:tukey1")
 @
 
