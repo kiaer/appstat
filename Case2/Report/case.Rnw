@@ -6,9 +6,9 @@ The data used in this case is collected from several data sets. In order to merg
 
 \code{week}:      The week of the year 
 
-\code{aveTemp}    Average temperature per week [^\circ C]
+\code{aveTemp}    Average temperature per week $[^\circ C]$
 
-\code{maxTemp}    Maximum temperature per week [^\circ C]
+\code{maxTemp}    Maximum temperature per week $[^\circ C]$
 
 \code{relHum}     Avarage weekly relative humidity [\%]
 

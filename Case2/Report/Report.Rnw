@@ -81,6 +81,7 @@ camp = read.table("case2regions4.txt", header=T, sep = "\t")
 library(MASS)
 library(car)
 library(lattice)
+library(xtable)
 @
 
 <<echo=FALSE, results='hide'>>=

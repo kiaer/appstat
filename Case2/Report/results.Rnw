@@ -1,2 +1,24 @@
 \section{Results}
 \subsection{The model}
+As mentioned in the analysis, the first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
+
+With this the same model was fitted using two-way interactions between all climate variables. Fitting this linear model and checking the diagnostics plot, the first problem seen was in the Residuals vs Fitted plot and Residuals vs Leverages plot (See figure \ref{fig:lm1fit}).
+<<lm1fit, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs Fitted and Leverages of initial two-way interaction model", fig.height=4>>=
+lm1 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip)^2, data=camp)
+par(mfrow=c(1,2))
+plot(lm1, which=1)
+plot(lm1, which=5)
+@
+Using this we see both a problem with a point outside Cook's distance and the Residuals vs Fitted could have a better fit. Therefore looking into using a Box-Cox transformation with a subset of the data was the next step in choosing a model. The result of a Box-Cox transformation can be seen in Figure \ref{fig:boxcox}. 
+<<boxcox, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Box-Cox transformation of initial two-way interaction model", fig.height=3, fig.width=5>>=
+par(mfrow=c(1,1))
+lm1 <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip )^2, data=camp, subset = -496)
+boxcox(lm1, lambda = seq(0, 1, length.out = 20), data=camp)
+@
+The Box-Cox transformation results in a $\lambda$-value of between 0.5 and 0.75, leaving the choice for the next step of the model and the transformation of the response of \code{0.7}.
+
+For the next step, looking into further transformations of the climate variables was considered using Residual plots and the Tukeys test.
+<<reslm1, echo=FALSE, results='asis', fig.align='center', fig.cap="Residual plots on Box-Cox transformed variables", fig.height=3>>=
+xtable(residualPlots(lm1, which=6))
+@
+
