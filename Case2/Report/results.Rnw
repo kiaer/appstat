@@ -1,9 +1,15 @@
 \section{Results}
 \subsection{Result of residual analysis}
+In order to investigate wether the residuals of our modelare independent of parameters we include, or not, we start by making a linear model to describe the fraction of positive flocks as a function of all climate variables and the week of the year. When examining the residuals plotted against all climate variables, the residuals are evenly spread, and no patterns are to find and the residuals are therefore considered to be independent of these variables. However, when it comes to the residuals plotted against week number there is a pattern forming, weakly following the seasonal fluctuations with mostly positive residuals in the summer period (figure \ref{fig:weekres}). This means that the residuals are not independent of the week number, and therefore week number is left out of our model.
+<<weekres, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs week number and fitted values in a basic model describing the fraction of positive flocks as a function of all climate variables and the week of the year. Residuals are proven to not be independent of week number, and this is therefore left out of our final model. ", fig.height=4>>=
+lm1test <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week )^2, data=camp)
+residualPlots(lm1test,terms=~.-aveTemp-maxTemp-relHum-sunHours-precip-Fitted.values)
+@
+
 
 \subsection{The model}
 \label{sec:model}
-As mentioned in the analysis, the first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
+The first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
 
 With this the same model was fitted using two-way interactions between all climate variables. Fitting this linear model and checking the diagnostics plot, the first problem seen was in the Residuals vs Fitted plot and Residuals vs Leverages plot (See figure \ref{fig:lm1fit}).
 <<lm1fit, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs Fitted and Leverages of initial two-way interaction model", fig.height=4>>=
@@ -64,10 +70,17 @@ pred.campyb<- predict(a3, int="p",newdata=campyb)
 #matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
 matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 @
+<<<<<<< HEAD
 From Figure \ref{fig:Prediction} we can confirm that temperature has a larger impact on the prorportion of infected than the sun hours according to our model.
 
 From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the proportion infected.
 <<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours">>=
+=======
+From Figure \ref{fig:Prediction} we can see temperature has a larger impact on the and steeper increase than sun hours according to our model.
+
+From here we can investigate the interaction between sun hours and average temperature in an image plot, looking at how changes in temperature and sun hours will affect the infected. 
+<<imageplot, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Image plot of the interaction between temperature and sun hours", fig.height=4>>=
+>>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
 p.sunHours <- seq(0,100,by = 1)
 p.aveTemp <- seq(0, 22)
 par(mfrow=c(1,1))
@@ -79,19 +92,21 @@ pred <- predict(a3, newdata = pred.data, interval = "predict")
 ## Wrapping the predictions as a matrix 
 z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
 z2 <- z
-z2[z2 > 1] <- NA
-
+z2[z2 >= 1.05] <- NA
 ## First an image:
 image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
 ## Adding a contour:
 contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
 points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
-
 @
-
+Looking at Figure \ref{fig:imageplot}, the prediction shows flaws in our model, with predictions with a proportion of more than one. Still we can use it to see the general trend, sun hours and average temperature follows is interacting. It further proves the point of temperature being the main influence on infected flocks, as while sun hours has an effect, it doesn't increase the proportion of positive flocks in nearly the same manner as temperature. 
 
 \subsection{Regional effects on positive flocks}
+<<<<<<< HEAD
 In order to investigate whether there are regional differences in the fraction of positive flocks, set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. The model is set up as follows:
+=======
+To start investigating whether there are regional effects on the fraction of positive flocks, a plot was produced to see the fraction of positive flocks for each region (figure \ref{fig:regbox}). Here region R4 seems to stand out by having a large fraction of positive flocks compared to the others. However, in this comparison no seasonal effects are taken into account, and therefore we cannot conclude anything from this plot. We only have suspicions at this point.
+>>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
 
 <<regfactor, echo=FALSE,results='hide'>>=
 names(camp)
@@ -103,12 +118,24 @@ REGIONER$totalR <-
 REGIONER$posR <- unlist(camp[,11 + (0:7)*2])
 REGIONER$week<-as.factor(REGIONER$week)
 @
+
+<<regbox, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Box plot showing the fraction of positive flocks for each region. Region R4 stands out as as the one with the highest fractions, but as thhis plot does not take seasonality into account no conclusion can be made from this alone. ", fig.height=4>>=
+plot(REGIONER$region,(REGIONER$posR/REGIONER$totalR),xlab="Region",ylab="pos fraction")
+@
+
+In order to take seasonal effects into account when comparing regional differences in the fraction of positive flocks, we set up a new linear model to investigate this. This new linear model is based on the same variables as our main model, but with region added as a explanatory factor. This model is set up as follows:
+
+
 <<lmr, echo=TRUE>>=
 lmr1<-lm(((posR)/totalR)~(maxTemp + relHum + precip  + sunHours + I(aveTemp^2) 
                          + I(sunHours^2) + I(precip^2))^2+region,data = REGIONER)
 @
 
+<<<<<<< HEAD
 When examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it does not fulfill the requirements for a linear model. Residuals are supposed to be evenly spread, and not show any trend or pattern. 
+=======
+However, when examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it does not fulfil the requirements for a linear model. 
+>>>>>>> 0871e21a6af0385387985039f4991d9a58407b6b
 
 <<regions, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Diagnostics plots of the model lmr1 trying to investigate regional differences in the fraction of positive flocks. Based on these plots the model is discarded, as it doesn't fulfill the requirements of a linear model.">>=
 par(mfrow=c(2,2))

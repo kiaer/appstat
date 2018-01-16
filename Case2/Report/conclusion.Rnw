@@ -1,1 +1,6 @@
 \section{Conclusion}
+From our analysis it is seen that climate does influence the spread of campylobacter in chicken flocks. The most influential is the temperatures effect on the spread.
+
+While there is indications on spread being different on regional levels. Using our model and the regional data provided resulted in an inaccurate model. Thus actually proving this statistically difference of the regions is out of the scope of this assignment.
+
+Even though climate does appear to be influential, looking at the proportion of infected flocks during the year, there seems to be some variable independent on climate influencing the spread, as this is not completly linearly related to the average temperature fluctations during the year.
