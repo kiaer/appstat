@@ -110,7 +110,7 @@ lmr1<-lm(((posR)/totalR)~(maxTemp + relHum + precip  + sunHours + I(aveTemp^2)
 
 When examining the diagnostics plots for this model (figure \ref{fig:regions}) it can be concluded that this is not an appropriate model for investigating this. Even though the errors are still normally distributed, the residuals vs. fitted values plot and Scale-Location plot are skewed, and thus it does not fulfill the requirements for a linear model. Residuals are supposed to be evenly spread, and not show any trend or pattern. 
 
-<<regions, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Diagnostics plots of the model lmr1 trying to investigate regional differences in the fraction of positive flocks. Based on these plots the model is discarded, as it doesn't fulfil requirements of a linear model.">>=
+<<regions, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Diagnostics plots of the model lmr1 trying to investigate regional differences in the fraction of positive flocks. Based on these plots the model is discarded, as it doesn't fulfill the requirements of a linear model.">>=
 par(mfrow=c(2,2))
 plot(lmr1)
 @
