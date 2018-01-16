@@ -1,6 +1,6 @@
 \section{Analysis}
-<<>>
-corvar<-data.frame(facit$pos/facit$total,facit[,3:7])
+<<cor, results='asis', echo=FALSE>>=
+corvar<-data.frame(camp$pos/camp$total,facit[,3:7])
 
 cortable<-round(cor(corvar),2)
 
@@ -11,8 +11,8 @@ cortable[5,3]<-round(cor.test(corvar$maxTemp,corvar$sunHours)$estimate,2)
 cortable[5,4]<-round(cor.test(corvar$relHum,corvar$sunHours)$estimate,2)
 cortable[6,4]<-round(cor.test(corvar$relHum,corvar$precip)$estimate,2)
 cortable[6,5]<-round(cor.test(corvar$sunHours,corvar$precip)$estimate,2)
-cortable[4,1]<-round(cor.test(corvar$facit.pos.facit.total,corvar$relHum)$estimate,2)
-cortable[5,1]<-round(cor.test(corvar$facit.pos.facit.total,corvar$sunHours)$estimate,2)
+cortable[4,1]<-round(cor.test(corvar$camp.pos.camp.total,corvar$relHum)$estimate,2)
+cortable[5,1]<-round(cor.test(corvar$camp.pos.camp.total,corvar$sunHours)$estimate,2)
 
 colnames(cortable)[1]<-"pos/total"
 cortable[!lower.tri(cortable)]<-""
