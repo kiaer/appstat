@@ -1,11 +1,12 @@
 \section{Results}
-<<<<<<< HEAD
-\subsection{Residual analysis}
-In order to investigate wether the residuals of our modelare independent of parameters we include, or not, we start by making a linear model to describe the fraction of positive flocks as a function of all climate variables and the week of the year. When examining the residuals plotted against all climate variables, the residuals are evenly spread, and no patterns are to find and the residuals are therefore considered to be independent of these variables. However, when it comes to the residuals plotted against week number there is a tendency 
-=======
 \subsection{Result of residual analysis}
+In order to investigate wether the residuals of our modelare independent of parameters we include, or not, we start by making a linear model to describe the fraction of positive flocks as a function of all climate variables and the week of the year. When examining the residuals plotted against all climate variables, the residuals are evenly spread, and no patterns are to find and the residuals are therefore considered to be independent of these variables. However, when it comes to the residuals plotted against week number there is a pattern forming, weakly following the seasonal fluctuations with mostly positive residuals in the summer period (figure \ref{fig:weekres}). This means that the residuals are not independent of the week number, and therefore week number is left out of our model.
+<<weekres, echo=FALSE, results='hide', fig.align='center', fig.pos="H", fig.cap="Residuals vs week number and fitted values in a basic model describing the fraction of positive flocks as a function of all climate variables and the week of the year. Residuals are proven to not be independent of week number, and this is therefore left out of our final model. ", fig.height=4>>=
+lm1test <- lm((pos / total) ~ (aveTemp + maxTemp + relHum + sunHours + precip + week )^2, data=camp)
+residualPlots(lm1test,terms=~.-aveTemp-maxTemp-relHum-sunHours-precip-Fitted.values)
+@
 
->>>>>>> 0c0332352591fcc851ddf55c958b0caf33e03350
+
 \subsection{The model}
 \label{sec:model}
 As mentioned in the analysis, the first linear model we looked into building contained three-way interactions between the all the climate variables and the proportion of the positive flocks as response variable. Doing this and reducing the model, the end result is a very large model containing multiple three-way interactions. Even while the average temperatures interaction with both the humidity and precipitation does make somewhat sense, the same interaction can be described with the temperatures interaction on either the humidity or the percipitation.
