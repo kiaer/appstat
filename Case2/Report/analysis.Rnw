@@ -1,6 +1,6 @@
 \section{Analysis}
 <<cor, results='asis', echo=FALSE>>=
-corvar<-data.frame(camp$pos/camp$total,facit[,3:7])
+corvar<-data.frame(camp$pos/camp$total,camp[,3:7])
 
 cortable<-round(cor(corvar),2)
 
