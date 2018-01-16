@@ -128,25 +128,25 @@ pred.campyb<- predict(a3, int="p",newdata=campyb)
 #matlines(campy$aveTemp,pred.campy^(10/7),lty=c(1,2,2),col=3,lwd=2)
 matlines(campyb$sunHours,pred.campyb^(10/7),lty=c(1,2,2),col=2,lwd=2)
 
-
-p.sunHours <- seq(0,100,by = 1)
-p.aveTemp <- seq(0, 22)
+summary(a3)
+p.aveTemp <- seq(-5, 25)
+p.sunHours <- seq(0,80,by = 1)
 par(mfrow=c(1,1))
 
 ## Creating prediction data.frame and then predicting
-pred.data <- pred.frame(reference = list(sunHours=p.sunHours, aveTemp=p.aveTemp), data = camp, others = c("maxTemp", "relHum", "precip"))
+pred.data <-pred.frame(reference = list(aveTemp=p.aveTemp, sunHours=p.sunHours), data = camp, others = c("maxTemp", "relHum", "precip"))
 pred <- predict(a3, newdata = pred.data, interval = "predict")
 
 ## Wrapping the predictions as a matrix 
-z <- matrix(pred[,"fit"], nrow=length(p.sunHours))
+z <- matrix(pred[,"fit"], nrow=length(p.aveTemp))
 z2 <- z
-z2[z2 > 1] <- NA
+z2[z2 >= 1.1] <- NA
 
 ## First an image:
-image(p.sunHours, p.aveTemp, z2, xlab = "sunHours", ylab = "Average Temperature")
+image(p.aveTemp, p.sunHours, z2, xlab = "Average temp", ylab = "Sun hours")
 ## Adding a contour:
-contour(p.sunHours, p.aveTemp, z2, add=TRUE, labcex = 1.5)
-points(aveTemp ~ sunHours, data= camp, cex=0.5) # To show the observations
+contour(p.aveTemp, p.sunHours, z2, add=TRUE, labcex = 1.5)
+points(sunHours ~ aveTemp, data= camp, cex=0.5) # To show the observations
 z2 <- z
 z2[z2 > 1] <- NA
 ## First an image:
